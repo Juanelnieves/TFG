@@ -1,0 +1,96 @@
+body {
+    background-color: #14c49b;
+    align-items: center;
+}
+
+/* MAIN */
+main {
+    display: flex;
+    flex-grow: 1;
+    height: 90vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+    height: 50vh;
+}
+
+
+.cont-main {
+    background: linear-gradient(to bottom, #379584, #6dd4c2);
+    width: calc(1440px / 1.5);
+    height: calc(1357px / 2.2);
+}
+
+.row {
+    height: 50%;
+    align-items: center;
+}
+
+.cont-1 {
+    background-color: #98cbc2;
+    width: 40%;
+    height: 30%;
+}
+
+.cont-photo {
+    background-color: green;
+    width: 60px;
+    height: 60px;
+    padding-left: 24px;
+    padding-right: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.cont-data {
+    display: grid;
+    align-items: center;
+}
+
+.cont-main2 {
+    width: 40%;
+    height: 30%;
+}
+
+.cont-2 {
+    background-color: #98cbc2;
+    border-radius: 12px;
+    flex-grow: 1;
+    padding-bottom: 68px;
+}
+
+.cont-wallet {
+    font-size: 20px;
+    color: #EDFAF7;
+
+}
+
+.cont-circle {
+    width: 80px;
+    height: 80px;
+    background: #e5e284;
+    position: absolute;
+    top: 46%;
+    left: 48%;
+}
+
+/* color rows pares */
+.table-row-even {
+    background-color: rgba(139,  217,  209,  0.8);
+}
+.table-row-even:hover {
+    background-color: rgba(131, 203, 196, 0.9); /* #8BD9D1 con  90% de opacidad */
+}
+/* rows impares */
+.table-row-odd {
+    background-color: rgba(255,  255,  255,  1); 
+}
+
+.table-row-odd:hover {
+    background-color: rgba(237, 237, 237, 0.9); /* 90% de opacidad al pasar el ratón */
+}
+
+.my-custom-class {
+    font-weight: bold;
+}
