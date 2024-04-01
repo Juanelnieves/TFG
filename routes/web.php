@@ -24,10 +24,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/cryptos', [CryptoController::class, 'index'])->name('cryptos.index');
 
 //rutas para pools
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/cryptos', [CryptoController::class, 'index'])->name('cryptos.index');
     Route::get('/pools', [PoolController::class, 'showAllPools'])->name('pools.showAll');
     Route::get('/mypools', [PoolController::class, 'showMyPools'])->name('pools.showMy');
     Route::post('/addLiquidity', [PoolController::class, 'addLiquidity'])->name('addLiquidity');
