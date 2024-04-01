@@ -18,7 +18,10 @@
     <script defer src="{{ asset('js/createTokenModal.js') }}"></script>
     <script defer src="{{ asset('js/changeTokenUrl.js') }}"></script>
     <!-- Styles -->
-    @vite(['resources/js/app.js', 'resources/css/app.scss', 'resources/css/app.css', 'resources/css/custom.scss', 'resources/css/custom.css'])
+    @php
+        $isCryptos = Route::currentRouteName() === 'cryptos.index';
+    @endphp
+    @vite(['resources/js/app.js', 'resources/css/app.scss', 'resources/css/app.css', 'resources/css/custom.scss', 'resources/css/custom.css', $isCryptos ? 'resources/css/cryptos.scss' : null])
 </head>
 
 <body>

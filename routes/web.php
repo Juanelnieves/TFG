@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CryptoController;
 use App\Http\Controllers\PoolController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\TransactionController;
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/cryptos', [CryptoController::class, 'index'])->name('cryptos.index');
 
 //rutas para pools
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -41,7 +43,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/tokens/all', [TokenController::class, 'showAllTokens'])->name('showAll.tokens');
     // tabla de todas las transacciones
     Route::get('/transactions/all', [TransactionController::class, 'showAllTransactions'])->name('showAll.transactions');
-    
 });
 
 
