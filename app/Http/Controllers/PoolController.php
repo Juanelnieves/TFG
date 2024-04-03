@@ -11,6 +11,7 @@ use App\Models\Token;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Services\CryptoPriceService;
 
 class PoolController extends Controller
 {
@@ -20,11 +21,11 @@ class PoolController extends Controller
         $request->validate([
             'amount' => 'required|numeric|gt:0',
         ]);
-        
+
         $user = User::findOrFail($userId);
         $token = Token::findOrFail($tokenId);
         $pool = Pool::findOrFail($poolId);
-        
+
         // Agregar la transacción de liquidez
         $transaction = new Transaction();
         $transaction->type = 'AgregarLiquidez';
@@ -174,14 +175,25 @@ class PoolController extends Controller
         $allPools = Pool::all();
         return view('auth.dashboard', compact('allPools'));
     }
-    public function showHomePools()
+
+    public function showHomePools(CryptoPriceService $cryptoPriceService)
     {
         $user = auth()->user();
         $myPools = $user->pools;
         $allPools = Pool::all();
         $tokens = Token::all();
 
-        return view('auth.dashboard', compact('myPools', 'allPools', 'tokens'));
+        // Obtener el volumen en 24 horas
+        $totalVolume = $cryptoPriceService->get24hVolume();
+
+        // Obtener el marketCap
+        $marketCap = $cryptoPriceService->getBTCMarketCap();
+
+        // Obtener el precio del token GAIA proporcional al precio de BTC
+        $gaiaPrice = 1000000 / ($cryptoPriceService->getTokenPrice('bitcoin'));
+        $gaiaPrice = number_format($gaiaPrice, 3); // Trunca a 3 decimales
+
+        return view('auth.dashboard', compact('myPools', 'allPools', 'tokens', 'totalVolume', 'gaiaPrice', 'marketCap'));
     }
 
 

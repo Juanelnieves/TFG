@@ -16,6 +16,7 @@ class TokensTableSeeder extends Seeder
     public function run()
     {
         $user = User::first(); // Get the first user to associate with the token
+        $defaultIcon= 'https://cdn-icons-png.freepik.com/512/5266/5266579.png';
 
         Token::create([
             'name' => 'Pedrito',
@@ -37,6 +38,15 @@ class TokensTableSeeder extends Seeder
             'url' => 'https://media.licdn.com/dms/image/C4D03AQEoGN9yZGXaXA/profile-displayphoto-shrink_400_400/0/1663705760851?e=2147483647&v=beta&t=m0krYXwfi2k-ialrvr26Jw-qqYG24EJrJbOIohBfmqA',
             'total_supply' =>  1000000,
             'user_id' => $user->id,
+        ]);
+
+         // Token de test del User 2
+         Token::create([
+            'name' => 'Token C',
+            'symbol' => 'TKC',
+            'url' => '',
+            'total_supply' => 1000000,
+            'user_id' => 2, 
         ]);
     }
 }

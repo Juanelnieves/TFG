@@ -28,5 +28,14 @@ class PoolsTableSeeder extends Seeder
             'token1_id' => $token1->id,
             'token2_id' => $token2->id,
         ]);
+
+        Pool::create([
+            'name' => 'Pool Prueba',
+            'description' => 'Pool para TKC con PDT',
+            'total_liquidity' => 1000.00,
+            'user_id' => 2, // ID del segundo usuario
+            'token1_id' => 4, 
+            'token2_id' => 1, 
+        ]);
     }
 }

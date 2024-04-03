@@ -37,7 +37,7 @@ class TokenController extends Controller
             $token->name = $request->name;
             $token->symbol = $request->symbol;
             $token->total_supply = $request->totalSupply;
-            $token->url = $request->url; // link a la imagen por url
+            $token->url = $request->url ?? 'https://cdn-icons-png.freepik.com/512/5266/5266579.png'; // Usar el icono predeterminado si no se especifica uno
             $token->user_id = $userId;
             $token->save();
 

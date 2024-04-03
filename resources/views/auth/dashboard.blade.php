@@ -18,20 +18,20 @@
 
         <!-- Overview Section -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <!-- Total Liquidity -->
+            <!-- Total MarketCap -->
             <div class="bg-green-800 p-4 rounded-lg shadow-lg text-white text-center">
-                <div class="text-lg">Total Liquidity</div>
-                <div class="text-3xl font-bold">$330,338,833</div>
+                <div class="text-lg">Total Market Cap</div>
+                <div class="text-3xl font-bold">${{ $marketCap }}M</div>
             </div>
             <!--  24h Volume -->
             <div class="bg-green-700 p-4 rounded-lg shadow-lg text-white text-center">
                 <div class="text-lg">24h Volume</div>
-                <div class="text-3xl font-bold">$4,336,033</div>
+                <div class="text-3xl font-bold">${{ $totalVolume }}M</div>
             </div>
             <!-- GAIA Price -->
             <div class="bg-green-600 p-4 rounded-lg shadow-lg text-white text-center">
                 <div class="text-lg">GAIA Price</div>
-                <div class="text-3xl font-bold">$0.33</div>
+                <div class="text-3xl font-bold">${{ $gaiaPrice }}</div>
             </div>
         </div>
 
@@ -59,8 +59,8 @@
                             <div class="text-center">{{ $pool->description }}</div>
                             <div class="text-center flex items-center justify-center">
                                 @if ($pool->token1)
-                                    <img src="{{ $pool->token1->url }}"
-                                        alt="Token   1 Placeholder" class="rounded-circle h-6 w-6 mx-1">
+                                    <img src="{{ $pool->token1->url ?? 'https://cdn-icons-png.freepik.com/512/5266/5266579.png'}}" alt="Token   1 Placeholder"
+                                        class="rounded-circle h-6 w-6 mx-1">
                                     {{ $pool->token1->name }}
                                 @else
                                     <span class="text-gray-500">Token 1 no asignado</span>
@@ -68,8 +68,8 @@
                             </div>
                             <div class="text-center flex items-center justify-center ">
                                 @if ($pool->token2)
-                                    <img src="{{ $pool->token2->url }}"
-                                        alt="Token   2 Placeholder" class="rounded-circle  h-6 w-6 mx-1">
+                                    <img src="{{ $pool->token2->url ?? 'https://cdn-icons-png.freepik.com/512/5266/5266579.png' }}" alt="Token   2 Placeholder"
+                                        class="rounded-circle  h-6 w-6 mx-1">
                                     {{ $pool->token2->name }}
                                 @else
                                     <span class="text-gray-500">Token 2 no asignado</span>
@@ -85,6 +85,11 @@
         <!-- Other Pools Section -->
         <div class="bg-green-900 p-4 rounded-lg shadow-lg text-white mb-8">
             <div class="text-lg mb-4">Otras Pools</div>
+            <div class="py-4 grid grid-cols-4 gap-4 items-center">
+                <div class="font-bold">Nombre del Pool</div>
+                <div class="font-bold text-center">Descripción</div>
+                <div class="font-bold text-center">Liquidez</div>
+            </div>
             <div class="divide-y divide-gray-700">
                 @foreach ($allPools as $pool)
                     @if (!$myPools || !$myPools->contains($pool))
@@ -151,7 +156,7 @@
                                                             class="bg-transparent text-black focus:outline-none appearance-none">
                                                             @foreach ($tokens as $token)
                                                                 <option value="{{ $token->id }}"
-                                                                    data-icon-url="{{ $token->url }}">
+                                                                    data-icon-url="{{ $token->url ?? 'https://cdn-icons-png.freepik.com/512/5266/5266579.png' }}">
                                                                     {{ $token->name }}
                                                                 </option>
                                                             @endforeach
@@ -181,7 +186,7 @@
                                                             class="bg-transparent text-black focus:outline-none appearance-none">
                                                             @foreach ($tokens as $token)
                                                                 <option value="{{ $token->id }}"
-                                                                    data-icon-url="{{ $token->url }}">
+                                                                    data-icon-url="{{ $token->url ?? 'https://cdn-icons-png.freepik.com/512/5266/5266579.png' }}">
                                                                     {{ $token->name }}
                                                                 </option>
                                                             @endforeach
