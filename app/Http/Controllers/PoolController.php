@@ -16,36 +16,69 @@ use App\Services\CryptoPriceService;
 class PoolController extends Controller
 {
     //Añadir Liquidez
-    public function addLiquidity(Request $request, $userId, $poolId, $tokenId, $amount)
+    public function addLiquidity(Request $request)
     {
+        // Validar los datos del request
         $request->validate([
-            'amount' => 'required|numeric|gt:0',
+            'userId' => 'required|numeric|exists:users,id',
+            'poolId' => 'required|numeric|exists:pools,id',
+            'token1_amount' => 'required|numeric|gt:0',
+            'token2_amount' => 'required|numeric|gt:0',
         ]);
 
-        $user = User::findOrFail($userId);
-        $token = Token::findOrFail($tokenId);
-        $pool = Pool::findOrFail($poolId);
+        // Iniciar una transacción
+        DB::beginTransaction();
 
-        // Agregar la transacción de liquidez
-        $transaction = new Transaction();
-        $transaction->type = 'AgregarLiquidez';
-        $transaction->user_id = $userId;
-        $transaction->amount = $amount;
-        $transaction->save();
+        try {
+            // Obtener el usuario y la pool
+            $user = User::findOrFail($request->userId);
+            $pool = Pool::findOrFail($request->poolId);
 
-        // Actualizar la tabla de liquidez
-        $liquidity = new Liquidity();
-        $liquidity->user_id = $userId;
-        $liquidity->pool_id = $poolId;
-        $liquidity->token_id = $tokenId;
-        $liquidity->amount = $amount;
-        $liquidity->save();
+            // Verificar que el usuario tenga suficientes tokens
+            $userToken1Balance = $user->tokens()->where('token_id', $pool->token1_id)->first()->pivot->amount ?? 0;
+            $userToken2Balance = $user->tokens()->where('token_id', $pool->token2_id)->first()->pivot->amount ?? 0;
 
-        // Actualizar la liquidez total del pool
-        $pool->total_liquidity += $amount;
-        $pool->save();
+            if ($userToken1Balance < $request->token1_amount || $userToken2Balance < $request->token2_amount) {
+                throw new Exception('No tienes suficientes tokens para añadir a la pool.');
+            }
 
-        return redirect()->route('addLiquiditySuccess')->with('info', 'Liquidez agregada exitosamente');
+            // Crear un nuevo registro en la tabla liquiditys para cada token
+            $liquidity1 = new Liquidity();
+            $liquidity1->user_id = $request->userId;
+            $liquidity1->pool_id = $request->poolId;
+            $liquidity1->token_id = $pool->token1_id;
+            $liquidity1->amount = $request->token1_amount;
+            $liquidity1->save();
+
+            $liquidity2 = new Liquidity();
+            $liquidity2->user_id = $request->userId;
+            $liquidity2->pool_id = $request->poolId;
+            $liquidity2->token_id = $pool->token2_id;
+            $liquidity2->amount = $request->token2_amount;
+            $liquidity2->save();
+
+            // Actualizar la liquidez total de la pool
+            $pool->total_liquidity += $request->token1_amount + $request->token2_amount;
+            $pool->save();
+
+            // Reducir la cantidad de tokens del usuario
+            $user->tokens()->updateExistingPivot($pool->token1_id, ['amount' => $userToken1Balance - $request->token1_amount]);
+            $user->tokens()->updateExistingPivot($pool->token2_id, ['amount' => $userToken2Balance - $request->token2_amount]);
+
+            // Si todo va bien, confirmar la transacción
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Liquidez añadida exitosamente');
+        } catch (Exception $e) {
+            // Si algo falla, revertir la transacción
+            DB::rollBack();
+
+            // Registrar el error
+            Log::error('Error añadiendo liquidez: ' . $e->getMessage());
+
+            // Redirigir con un mensaje de error
+            return redirect()->back()->withErrors(['message' => 'Hubo un error al añadir liquidez.']);
+        }
     }
 
     //Quitar Liquidez
@@ -96,40 +129,27 @@ class PoolController extends Controller
             'token1' => 'required|exists:tokens,id', // Asegúrate de que el token1 exista en la tabla de tokens
             'token2' => 'required|exists:tokens,id', // Asegúrate de que el token2 exista en la tabla de tokens
         ]);
-    
+
         // Obtener el usuario autenticado
         $user = auth()->user();
-    
+
         // Buscar los tokens por ID
         $token1 = Token::findOrFail($request->token1);
         $token2 = Token::findOrFail($request->token2);
-    
-        // Verificar que el usuario tenga al menos una cantidad de los tokens seleccionados
-        $userHasToken1 = Liquidity::where('user_id', $user->id)
-            ->where('token_id', $token1->id)
-            ->exists();
-    
-        $userHasToken2 = Liquidity::where('user_id', $user->id)
-            ->where('token_id', $token2->id)
-            ->exists();
-    
-        if (!$userHasToken1 || !$userHasToken2) {
-            return redirect()->back()->withErrors(['message' => 'No tienes suficientes tokens para crear este pool.']);
-        }
-    
+
         DB::beginTransaction();
-    
+
         try {
             // Crear un nuevo pool con el usuario autenticado como dueño
             $pool = new Pool();
             $pool->name = $request->name;
             $pool->description = $request->description;
-            $pool->total_liquidity = 0;
+            $pool->total_liquidity =   0;
             $pool->user_id = $user->id;
             $pool->token1_id = $token1->id; // Guarda el ID del token1
             $pool->token2_id = $token2->id; // Guarda el ID del token2
             $pool->save();
-    
+
             // Crear una nueva transacción de tipo "pool creation"
             $transaction = new Transaction();
             $transaction->type = 'Pool Creation';
@@ -138,9 +158,9 @@ class PoolController extends Controller
             $transaction->status = 'completed';
             $transaction->amount = '0';
             $transaction->save();
-    
+
             DB::commit();
-    
+
             return redirect()->route('createPoolSuccess')->with('info', 'Pool creada exitosamente');
         } catch (Exception $e) {
             DB::rollBack();
@@ -206,7 +226,7 @@ class PoolController extends Controller
         $gaiaPrice = 1000000 / ($cryptoPriceService->getTokenPrice('bitcoin'));
         $gaiaPrice = number_format($gaiaPrice, 3); // Trunca a 3 decimales
 
-        return view('auth.dashboard', compact('myPools', 'allPools', 'tokens', 'totalVolume', 'gaiaPrice', 'marketCap'));
+        return view('auth.dashboard', compact('user', 'myPools', 'allPools', 'tokens', 'totalVolume', 'gaiaPrice', 'marketCap'));
     }
 
 

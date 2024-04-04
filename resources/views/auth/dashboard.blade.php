@@ -47,14 +47,14 @@
             <!-- List of My Pools -->
             <div class="mt-8">
                 <div class="divide-y divide-gray-700">
-                    <div class="py-4 grid grid-cols-4 gap-4 items-center">
+                    <div class="py-4 grid grid-cols-5 gap-4 items-center">
                         <div class="font-bold">Nombre del Pool</div>
                         <div class="font-bold text-center">Descripción</div>
                         <div class="font-bold text-center">Token 1</div>
                         <div class="font-bold text-center">Token 2</div>
                     </div>
                     @foreach ($myPools as $pool)
-                        <div class="py-4 grid grid-cols-4 gap-4 items-center">
+                        <div class="py-4 grid grid-cols-5 gap-4 items-center">
                             <div>{{ $pool->name }}</div>
                             <div class="text-center">{{ $pool->description }}</div>
                             <div class="text-center flex items-center justify-center">
@@ -75,6 +75,13 @@
                                     <span class="text-gray-500">Token 2 no asignado</span>
                                 @endif
                             </div>
+                            <div class="text-right">
+                                <!-- Botón para añadir liquidez -->
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addLiquidityModal"
+                                    data-user-id="{{ $user->id }}" data-pool-id="{{ $pool->id }}">Añadir
+                                    Liquidez</button>
+                            </div>
+
                         </div>
                     @endforeach
                 </div>
@@ -107,6 +114,36 @@
             </div>
         </div>
     </div>
+<!-- Modal para añadir liquidez -->
+<div class="modal fade" id="addLiquidityModal" tabindex="-1" aria-labelledby="addLiquidityModalLabel"
+aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="addLiquidityModalLabel">Añadir Liquidez</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="{{ route('addLiquidity', ['userId' => $user->id, 'poolId' => $pool->id]) }}"
+            method="POST">
+            @csrf
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="token1_amount" class="form-label">Cantidad de Token 1</label>
+                    <input type="number" class="form-control" id="token1_amount" name="token1_amount" required>
+                </div>
+                <div class="mb-3">
+                    <label for="token2_amount" class="form-label">Cantidad de Token 2</label>
+                    <input type="number" class="form-control" id="token2_amount" name="token2_amount" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary">Añadir Liquidez</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
 
 
     <!-- Create Pool Modal -->
@@ -218,6 +255,7 @@
             </div>
         </div>
     </div>
+    
 @endsection
 @if (session('info'))
     <div class="alert alert-success">
@@ -407,6 +445,16 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+            $('#addLiquidityModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget); // Botón que activó el modal
+                var userId = button.data('user-id'); // Extrae el ID del usuario
+                var poolId = button.data('pool-id'); // Extrae el ID de la pool
+
+                var modal = $(this);
+                modal.find('form').attr('action', "{{ route('addLiquidity') }}" + "?userId=" + userId +
+                    "&poolId=" + poolId);
+            });
+
             // Función para cargar los tokens y llenar las opciones del dropdown
             function loadTokens(dropdownId, userId) {
                 $.getJSON('/tokens', {

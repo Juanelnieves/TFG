@@ -30,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/cryptos', [CryptoController::class, 'index'])->name('cryptos.index');
     Route::get('/pools', [PoolController::class, 'showAllPools'])->name('pools.showAll');
     Route::get('/mypools', [PoolController::class, 'showMyPools'])->name('pools.showMy');
+
     Route::post('/addLiquidity', [PoolController::class, 'addLiquidity'])->name('addLiquidity');
     Route::post('/removeLiquidity', [PoolController::class, 'removeLiquidity'])->name('removeLiquidity');
     Route::post('/createPool', [PoolController::class, 'createPool'])->name('createPool');
