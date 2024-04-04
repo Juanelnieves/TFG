@@ -18,11 +18,8 @@ class TokenController extends Controller
             // Validar los datos del request
             $request->validate([
                 'name' => 'required|string|max:50',
-                //ejemplo btc bitcoin
                 'symbol' => 'required|string|max:10',
-                // cantidad total de tokens creados
                 'totalSupply' => 'required|numeric|gt:0',
-                // url (web) para la img del token
                 'url' => 'required|url',
             ]);
         } catch (ValidationException $e) {
@@ -33,24 +30,39 @@ class TokenController extends Controller
             DB::beginTransaction();
             // Crear y guardar el token
             $token = new Token();
-
+    
             $token->name = $request->name;
             $token->symbol = $request->symbol;
             $token->total_supply = $request->totalSupply;
             $token->url = $request->url ?? 'https://cdn-icons-png.freepik.com/512/5266/5266579.png'; // Usar el icono predeterminado si no se especifica uno
             $token->user_id = $userId;
             $token->save();
-
+    
+            // Obtener el usuario
+            $user = User::findOrFail($userId);
+    
+            // Asignar el total supply del token al usuario en la tabla user_tokens
+            $user->tokens()->attach($token->id, ['amount' => $request->totalSupply]);
+    
+            // Crear y guardar la transacción que asigna el total supply al usuario
+            $transaction = new Transaction();
+            $transaction->type = "token creation";
+            $transaction->status = "completed";
+            $transaction->amount = $request->totalSupply;
+            $transaction->user_id = $userId; // Asegurarse de que la transacción se asocie al usuario correcto
+            $transaction->save();
+    
             DB::commit();
-            return redirect()->route('create.tokenTransaction', ['totalSupply' => $request->totalSupply]);
+            return redirect()->route('showAll.tokens')->with('success', 'Token creado y asignado exitosamente');
         } catch (\Exception $e) {
             // Si algo falla, revertir la transacción
             DB::rollBack();
-
-            //Redireccionar a la vista de error con los errores de validación
+    
+            // Redireccionar a la vista de error con los errores de validación
             return back()->withErrors(['general' => 'Error al crear el token' . $e->getMessage()]);
         }
     }
+
     public function createTokenTransaction($total_supply)
     {
         try {

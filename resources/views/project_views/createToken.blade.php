@@ -49,7 +49,7 @@
                 <div class="mb-3">
                     <label for="totalSupply" class="form-label">Total Supply</label>
                     <input type="number" class="form-control" id="totalSupply" name="totalSupply" placeholder="14000"
-                        required min="100">
+                        required min="100" max="1000000000">
                 </div>
                 <div class="mb-3">
                     <label for="url" class="form-label">URL</label>

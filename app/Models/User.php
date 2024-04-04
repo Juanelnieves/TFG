@@ -47,7 +47,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Pool::class,  "user_id");
     }
     public function tokens(){
-        return $this->hasMany(Token::class,  "user_id");
+        return $this->belongsToMany(Token::class, 'user_tokens')->withPivot('amount');
     }
     public function transactions(){
         return $this->hasMany(Transaction::class,  "user_id");

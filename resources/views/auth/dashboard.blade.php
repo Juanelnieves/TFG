@@ -59,8 +59,8 @@
                             <div class="text-center">{{ $pool->description }}</div>
                             <div class="text-center flex items-center justify-center">
                                 @if ($pool->token1)
-                                    <img src="{{ $pool->token1->url ?? 'https://cdn-icons-png.freepik.com/512/5266/5266579.png'}}" alt="Token   1 Placeholder"
-                                        class="rounded-circle h-6 w-6 mx-1">
+                                    <img src="{{ $pool->token1->url ?? 'https://cdn-icons-png.freepik.com/512/5266/5266579.png' }}"
+                                        alt="Token   1 Placeholder" class="rounded-circle h-6 w-6 mx-1">
                                     {{ $pool->token1->name }}
                                 @else
                                     <span class="text-gray-500">Token 1 no asignado</span>
@@ -68,8 +68,8 @@
                             </div>
                             <div class="text-center flex items-center justify-center ">
                                 @if ($pool->token2)
-                                    <img src="{{ $pool->token2->url ?? 'https://cdn-icons-png.freepik.com/512/5266/5266579.png' }}" alt="Token   2 Placeholder"
-                                        class="rounded-circle  h-6 w-6 mx-1">
+                                    <img src="{{ $pool->token2->url ?? 'https://cdn-icons-png.freepik.com/512/5266/5266579.png' }}"
+                                        alt="Token   2 Placeholder" class="rounded-circle  h-6 w-6 mx-1">
                                     {{ $pool->token2->name }}
                                 @else
                                     <span class="text-gray-500">Token 2 no asignado</span>
@@ -407,23 +407,25 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-                    // Función para cargar los tokens y llenar las opciones del dropdown
-                    function loadTokens(dropdownId) {
-                        $.getJSON('/tokens', function(tokens) {
-                                const dropdown = $(`#${dropdownId}`);
-                                dropdown.empty(); // Limpia las opciones existentes
-                                $.each(tokens, function(i, token) {
-                                        dropdown.append($(`<option value="${token.id}">${token.name}</option>`);
-                                        });
-                                }).fail(function(jqXHR, textStatus, errorThrown) {
-                                console.error('Error loading tokens:', textStatus, errorThrown);
-                            });
-                        }
-
-                        // Llama a la función para cargar los tokens y llenar las opciones del primer dropdown
-                        loadTokens('token1Dropdown');
-                        // Llama a la función para cargar los tokens y llenar las opciones del segundo dropdown
-                        loadTokens('token2Dropdown');
+            // Función para cargar los tokens y llenar las opciones del dropdown
+            function loadTokens(dropdownId, userId) {
+                $.getJSON('/tokens', {
+                    userId: userId
+                }, function(tokens) {
+                    const dropdown = $(`#${dropdownId}`);
+                    dropdown.empty(); // Limpia las opciones existentes
+                    $.each(tokens, function(i, token) {
+                        dropdown.append($(`<option value="${token.id}">${token.name}</option>`));
                     });
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    console.error('Error loading tokens:', textStatus, errorThrown);
+                });
+            }
+
+            // Llama a la función para cargar los tokens y llenar las opciones del primer dropdown
+            loadTokens('token1Dropdown', {{ auth()->id() }});
+            // Llama a la función para cargar los tokens y llenar las opciones del segundo dropdown
+            loadTokens('token2Dropdown', {{ auth()->id() }});
+        });
     </script>
 @endpush

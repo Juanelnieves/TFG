@@ -12,11 +12,14 @@ class Token extends Model
     protected $fillable = [
         'user_id',
         'name',
+        'symbol',
+        'total_supply',
+        'url',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class, 'user_tokens')->withPivot('amount');
     }
 
     public function liquiditys()

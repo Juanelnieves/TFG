@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('symbol');
             $table->string('url',  2048)->nullable();
-            $table->integer('total_supply');
+            $table->bigInteger('total_supply'); 
             $table->foreignId('user_id')->references('id')->on('users');
             $table->timestamps();
         });

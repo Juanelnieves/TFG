@@ -96,27 +96,40 @@ class PoolController extends Controller
             'token1' => 'required|exists:tokens,id', // Asegúrate de que el token1 exista en la tabla de tokens
             'token2' => 'required|exists:tokens,id', // Asegúrate de que el token2 exista en la tabla de tokens
         ]);
-
+    
         // Obtener el usuario autenticado
         $user = auth()->user();
-
+    
         // Buscar los tokens por ID
         $token1 = Token::findOrFail($request->token1);
         $token2 = Token::findOrFail($request->token2);
-
+    
+        // Verificar que el usuario tenga al menos una cantidad de los tokens seleccionados
+        $userHasToken1 = Liquidity::where('user_id', $user->id)
+            ->where('token_id', $token1->id)
+            ->exists();
+    
+        $userHasToken2 = Liquidity::where('user_id', $user->id)
+            ->where('token_id', $token2->id)
+            ->exists();
+    
+        if (!$userHasToken1 || !$userHasToken2) {
+            return redirect()->back()->withErrors(['message' => 'No tienes suficientes tokens para crear este pool.']);
+        }
+    
         DB::beginTransaction();
-
+    
         try {
             // Crear un nuevo pool con el usuario autenticado como dueño
             $pool = new Pool();
             $pool->name = $request->name;
             $pool->description = $request->description;
-            $pool->total_liquidity =   0;
+            $pool->total_liquidity = 0;
             $pool->user_id = $user->id;
             $pool->token1_id = $token1->id; // Guarda el ID del token1
             $pool->token2_id = $token2->id; // Guarda el ID del token2
             $pool->save();
-
+    
             // Crear una nueva transacción de tipo "pool creation"
             $transaction = new Transaction();
             $transaction->type = 'Pool Creation';
@@ -125,9 +138,9 @@ class PoolController extends Controller
             $transaction->status = 'completed';
             $transaction->amount = '0';
             $transaction->save();
-
+    
             DB::commit();
-
+    
             return redirect()->route('createPoolSuccess')->with('info', 'Pool creada exitosamente');
         } catch (Exception $e) {
             DB::rollBack();
