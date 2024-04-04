@@ -23,6 +23,11 @@ class Token extends Model
         return $this->belongsToMany(User::class, 'user_tokens')->withPivot('amount');
     }
 
+    public function userTokens()
+    {
+        return $this->hasMany(UserToken::class);
+    }
+
     public function liquiditys()
     {
         return $this->hasMany(Liquidity::class,  "user_id");

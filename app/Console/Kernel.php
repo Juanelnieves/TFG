@@ -8,7 +8,8 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     protected $commands = [
-        Commands\UpdateCryptoData::class,
+        Commands\CreateCryptoData::class,
+        Commands\UpdateCryptoData::class
     ];
 
     protected function schedule(Schedule $schedule)

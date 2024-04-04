@@ -24,18 +24,15 @@ class UpdateCryptoData extends Command
         $user_id = 3; // ID del usuario al que se asignarán los tokens
 
         foreach ($cryptos as $crypto) {
-            // Insertar los datos en la tabla tokens
-            Token::updateOrInsert(
-                ['crypto_id' => $crypto['id']], // Usar crypto_id para identificar de manera única cada criptomoneda
-                [
-                    'name' => $crypto['name'],
-                    'symbol' => $crypto['symbol'],
-                    'url' => $crypto['image'],
-                    'total_supply' => $crypto['total_supply'], // Usar el total_supply directamente de la respuesta
-                    'price' => $crypto['current_price'],
-                    'user_id' => $user_id,
-                ]
-            );
+            // Actualizar los datos en la tabla tokens solo si el registro ya existe
+            Token::where('crypto_id', $crypto['id'])->update([
+                'name' => $crypto['name'],
+                'symbol' => $crypto['symbol'],
+                'url' => $crypto['image'],
+                'total_supply' => $crypto['total_supply'],
+                'price' => $crypto['current_price'],
+                'user_id' => $user_id,
+            ]);
         }
 
         $this->info('Cryptocurrency data updated successfully.');

@@ -145,8 +145,7 @@ class CryptoPriceService
         $cryptos = $response->json();
 
         foreach ($cryptos as $crypto) {
-            // Aquí asumimos que tienes una tabla en tu base de datos para almacenar los datos de las criptomonedas
-            // y que esta tabla tiene columnas para 'id', 'name', 'symbol', 'market_cap', 'current_price', y 'image'
+           
             DB::table('cryptos')->updateOrInsert(
                 ['id' => $crypto['id']],
                 [

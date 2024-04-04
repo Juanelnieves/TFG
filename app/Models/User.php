@@ -58,5 +58,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function liquiditys(){
         return $this->hasMany(Liquidity::class,  "user_id");
     }
-
+    public function userTokens()
+    {
+        return $this->hasMany(UserToken::class);
+    }
 }
