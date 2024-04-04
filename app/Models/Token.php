@@ -14,6 +14,7 @@ class Token extends Model
         'name',
         'symbol',
         'total_supply',
+        'price',
         'url',
     ];
 

@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class CryptoPriceService
 {
@@ -136,4 +138,26 @@ class CryptoPriceService
             return '10';
         }
     }
+
+    public function updateCryptoData()
+    {
+        $response = Http::get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false');
+        $cryptos = $response->json();
+
+        foreach ($cryptos as $crypto) {
+            // Aquí asumimos que tienes una tabla en tu base de datos para almacenar los datos de las criptomonedas
+            // y que esta tabla tiene columnas para 'id', 'name', 'symbol', 'market_cap', 'current_price', y 'image'
+            DB::table('cryptos')->updateOrInsert(
+                ['id' => $crypto['id']],
+                [
+                    'name' => $crypto['name'],
+                    'symbol' => $crypto['symbol'],
+                    'market_cap' => $crypto['market_cap'],
+                    'current_price' => $crypto['current_price'],
+                    'image' => $crypto['image'],
+                ]
+            );
+        }
+    }
+
 }

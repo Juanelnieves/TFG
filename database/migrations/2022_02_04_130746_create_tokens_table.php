@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('symbol');
             $table->string('url',  2048)->nullable();
             $table->bigInteger('total_supply'); 
+            $table->decimal('price',  24, 12) -> default(0.00);
+            $table->string('crypto_id')->nullable(); 
             $table->foreignId('user_id')->references('id')->on('users');
             $table->timestamps();
         });

@@ -12,7 +12,7 @@ class CreateUserTokensTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('token_id')->constrained()->onDelete('cascade');
-            $table->decimal('amount', 24, 12); // Ajusta el tipo de dato según tus necesidades
+            $table->decimal('amount', 24, 12);
             $table->timestamps();
         });
     }
