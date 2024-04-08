@@ -2,7 +2,7 @@
 
 @section('showMyTokens')
     <div class="container-fluid mx-auto">
-        <h3 class="text-xl font-bold mb-4 text-center">PROJECT_VIEWS - "ShowMyTokens"</h3>
+        <h1 class="text-center pb-1"><span class="rounded-pill title-custom px-3 display-6 pb-5">Mis tokens</span></h1>
         <div class="flex justify-center overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-yellow-500">

@@ -4,7 +4,7 @@
     {{-- SIDEBAR --}}
     <div class="container col-1 bg-dark rounded-5 ms-2 d-grid justify-content-center align-items-center">
         <div></div>
-        <a class="btn rounded-5 btn-secondary mt-5" href="{{ url('/pools') }}">
+        <a class="btn rounded-5 btn-secondary mt-5" href="{{ url('/home') }}">
             <i class="fa-solid fa-person-swimming"></i>
         </a>
         <a class="btn rounded-5 btn-secondary" href="{{ url('/tokens/all') }}">

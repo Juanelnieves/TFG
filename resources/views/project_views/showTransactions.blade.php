@@ -2,7 +2,7 @@
 
 @section('showTransactions')
     <div class="container mx-auto mt-5">
-        <h3 class="text-xl font-bold mb-4">Todas las Transacciones</h3>
+        <h1 class="text-center pb-1"><span class="rounded-pill title-custom px-3 display-6 pb-5">Transacciones</span></h1>
         <div class="flex justify-center overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-yellow-500">
