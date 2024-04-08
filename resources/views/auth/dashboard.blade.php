@@ -2,13 +2,22 @@
 
 @section('content')
     {{-- SIDEBAR --}}
-    <div class="container col-1 bg-warning rounded-5 ms-2 d-grid justify-content-center align-items-center">
+    <div class="container col-1 bg-dark rounded-5 ms-2 d-grid justify-content-center align-items-center">
         <div></div>
-        <a><button class="btn rounded-5 btn-secondary mt-5">A</button></a>
-        <a><button class="btn rounded-5 btn-secondary ">A</button></a>
-        <a><button class="btn rounded-5 btn-secondary">A</button></a>
-        <a><button class="btn rounded-5 btn-secondary">A</button></a>
-        <a><button class="btn rounded-5 btn-secondary mb-5">A</button></a>
+        <a class="btn rounded-5 btn-secondary mt-5" href="{{ url('/pools') }}">
+            <i class="fa-solid fa-person-swimming"></i>
+        </a>
+        <a class="btn rounded-5 btn-secondary" href="{{ url('/tokens/all') }}">
+            <i class="fa-brands fa-bitcoin"></i>
+        </a>
+        <a class="btn rounded-5 btn-secondary" href="{{ url('/tokens/view') }}">
+            <i class="fa-solid fa-coins"></i>
+        </a>
+        <a class="btn rounded-5 btn-secondary" href="{{ url('/transactions/all') }}">
+            <i class="fa-solid fa-receipt"></i>
+        </a>
+        <a class="btn rounded-5 btn-secondary mb-5" href="{{ url('/swap') }}">
+            <i class="fa-solid fa-retweet"></i> </a>
         <div></div>
     </div>
 
@@ -114,40 +123,40 @@
             </div>
         </div>
     </div>
-<!-- Modal para añadir liquidez -->
-<div class="modal fade" id="addLiquidityModal" tabindex="-1" aria-labelledby="addLiquidityModalLabel"
-aria-hidden="true">
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="addLiquidityModalLabel">Añadir Liquidez</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Modal para añadir liquidez -->
+    <div class="modal fade" id="addLiquidityModal" tabindex="-1" aria-labelledby="addLiquidityModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addLiquidityModalLabel">Añadir Liquidez</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('addLiquidity', ['userId' => $user->id, 'poolId' => $pool->id]) }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="token1_amount" class="form-label">Cantidad de Token 1</label>
+                            <input type="number" class="form-control" id="token1_amount" name="token1_amount" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="token2_amount" class="form-label">Cantidad de Token 2</label>
+                            <input type="number" class="form-control" id="token2_amount" name="token2_amount" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Añadir Liquidez</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <form action="{{ route('addLiquidity', ['userId' => $user->id, 'poolId' => $pool->id]) }}"
-            method="POST">
-            @csrf
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="token1_amount" class="form-label">Cantidad de Token 1</label>
-                    <input type="number" class="form-control" id="token1_amount" name="token1_amount" required>
-                </div>
-                <div class="mb-3">
-                    <label for="token2_amount" class="form-label">Cantidad de Token 2</label>
-                    <input type="number" class="form-control" id="token2_amount" name="token2_amount" required>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-primary">Añadir Liquidez</button>
-            </div>
-        </form>
     </div>
-</div>
-</div>
 
 
     <!-- Create Pool Modal -->
-    <div class="modal fade" id="createPoolModal" tabindex="-1" aria-labelledby="createPoolModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createPoolModal" tabindex="-1" aria-labelledby="createPoolModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content" style="background-color: #0d7936; color: white;">
                 <div class="modal-header">
@@ -255,7 +264,6 @@ aria-hidden="true">
             </div>
         </div>
     </div>
-    
 @endsection
 @if (session('info'))
     <div class="alert alert-success">

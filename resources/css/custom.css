@@ -1,5 +1,5 @@
 body {
-    background-color: #14c49b;
+    background-color: #1f4d1b;
     align-items: center;
 }
 
@@ -93,4 +93,10 @@ main {
 
 .my-custom-class {
     font-weight: bold;
+}
+
+/* TITLES */
+.title-custom{
+    background-color: rgba(6, 37, 9, 0.8);
+    color: #f1f1f1;
 }
