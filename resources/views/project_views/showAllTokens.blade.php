@@ -7,25 +7,32 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-yellow-500">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">ID del
+                        <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider text-center">
+                            ID del
                             Usuario
                         </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Nombre
+                        <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider text-center">
+                            Nombre
                         </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Símbolo
+                        <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider text-center">
+                            Símbolo
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider text-center">
                             Suministro
                             Total</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider text-center">
+                            Precio
+                        </th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @foreach ($tokens as $token)
                         <tr class="{{ $loop->iteration % 2 == 0 ? 'table-row-even' : 'table-row-odd' }}">
-                            <td class="px-6 py-4 whitespace-nowrap">{{ $token->user_id }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">{{ $token->name }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">{{ $token->symbol }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center">{{ $token->user_id }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center">{{ $token->name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center">{{ strtoupper($token->symbol) }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-center">{{ $token->total_supply }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center ">{{ $token->price }}</td>
                         </tr>
                     @endforeach
                 </tbody>
