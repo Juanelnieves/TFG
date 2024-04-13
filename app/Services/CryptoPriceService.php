@@ -60,7 +60,7 @@ class CryptoPriceService
             $response = $this->client->get('coins/markets', [
                 'query' => [
                     'vs_currency' => 'usd',
-                    'ids' => 'bitcoin', 
+                    'ids' => 'bitcoin',
                     'order' => 'market_cap_desc',
                     'per_page' => 1,
                     'page' => 1,
@@ -91,34 +91,34 @@ class CryptoPriceService
     }
 
     public function getBTCMarketCap()
-{
-    try {
-        $response = $this->client->get("coins/bitcoin", [
-            'query' => [
-                'vs_currency' => 'usd',
-            ],
-        ]);
+    {
+        try {
+            $response = $this->client->get("coins/bitcoin", [
+                'query' => [
+                    'vs_currency' => 'usd',
+                ],
+            ]);
 
-        $data = json_decode($response->getBody(), true);
-        $marketCap = $data['market_data']['market_cap']['usd'];
+            $data = json_decode($response->getBody(), true);
+            $marketCap = $data['market_data']['market_cap']['usd'];
 
-        // Convertir el market cap a float para asegurarse de que es un número
-        $marketCap = floatval($marketCap);
+            // Convertir el market cap a float para asegurarse de que es un número
+            $marketCap = floatval($marketCap);
 
-        // Verificar que $marketCap es un número antes de dividirlo
-        if (is_numeric($marketCap)) {
-            // Formatear el market cap a millones
-            $formattedMarketCap = number_format($marketCap / 1000000, 2);
-            return $formattedMarketCap;
-        } else {
-            // Manejar el caso en que $marketCap no es un número
-            return '184310270';
+            // Verificar que $marketCap es un número antes de dividirlo
+            if (is_numeric($marketCap)) {
+                // Formatear el market cap a millones
+                $formattedMarketCap = number_format($marketCap / 1000000, 2);
+                return $formattedMarketCap;
+            } else {
+                // Manejar el caso en que $marketCap no es un número
+                return '184310270';
+            }
+        } catch (\Exception $e) {
+            // Manejar la excepción
+            return '8384310270';
         }
-    } catch (\Exception $e) {
-        // Manejar la excepción
-        return '8384310270';
     }
-}
 
     public function getTokenPrice($tokenId)
     {
@@ -145,7 +145,7 @@ class CryptoPriceService
         $cryptos = $response->json();
 
         foreach ($cryptos as $crypto) {
-           
+
             DB::table('cryptos')->updateOrInsert(
                 ['id' => $crypto['id']],
                 [
@@ -158,5 +158,10 @@ class CryptoPriceService
             );
         }
     }
-
+    public static  function getCryptoPrice($cryptoId)
+    {
+        $response = Http::get("https://api.coingecko.com/api/v3/simple/price?ids={$cryptoId}&vs_currencies=usd");
+        $data = $response->json();
+        return $data[$cryptoId]['usd'] ?? 0; // Retorna el precio en USD o 0 si no se encuentra
+    }
 }
