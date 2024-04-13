@@ -10,7 +10,12 @@ class Pool extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id'
+        'user_id',
+        'name',
+        'description',
+        'total_liquidity',
+        'token1_id',
+        'token2_id',
     ];
 
     public function user()
