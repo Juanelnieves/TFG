@@ -24,31 +24,31 @@ class TokensTableSeeder extends Seeder
         Token::create([
             'name' => 'Pedrito',
             'symbol' => 'PDT',
-            'url' => 'https://www.buscabiografias.com/img/people/San-Pedro-Ap%C3%B3stol.jpg',
+            'url' => $defaultIcon,
             'total_supply' =>  1000000,
             'user_id' => $user->id,
             'crypto_id' => 'prueba1',
-            'price' =>  $cryptoPrice*2,
+            'price' =>  $cryptoPrice * 2,
 
         ]);
         Token::create([
             'name' => 'TPD',
             'symbol' => 'TPD',
-            'url' => 'https://upload.wikimedia.org/wikipedia/en/b/b9/Solana_logo.png',
+            'url' => $defaultIcon,
             'total_supply' =>  1000000,
             'user_id' => $user->id,
             'crypto_id' => 'prueba2',
-            'price' =>  $cryptoPrice*2.1,
+            'price' =>  $cryptoPrice * 2.1,
 
         ]);
         Token::create([
             'name' => 'KENTUCKY',
             'symbol' => 'KFC',
-            'url' => 'https://media.licdn.com/dms/image/C4D03AQEoGN9yZGXaXA/profile-displayphoto-shrink_400_400/0/1663705760851?e=2147483647&v=beta&t=m0krYXwfi2k-ialrvr26Jw-qqYG24EJrJbOIohBfmqA',
+            'url' => $defaultIcon,
             'total_supply' =>  1000000,
             'user_id' => $user->id,
             'crypto_id' => 'prueba3',
-            'price' =>  $cryptoPrice*2.4,
+            'price' =>  $cryptoPrice * 2.4,
 
         ]);
 
@@ -56,11 +56,11 @@ class TokensTableSeeder extends Seeder
         Token::create([
             'name' => 'Token C',
             'symbol' => 'TKC',
-            'url' => '',
+            'url' => $defaultIcon,
             'total_supply' => 1000000,
             'user_id' => 2,
             'crypto_id' => 'prueba4',
-            'price' =>  $cryptoPrice*1.2,
+            'price' =>  $cryptoPrice * 1.2,
 
         ]);
     }
