@@ -58,7 +58,7 @@ class CreateCryptoData extends Command
         foreach ($createdTokens as $token) {
             foreach ($createdTokens as $otherToken) {
                 if ($token->id !== $otherToken->id) {
-                    $poolSupply = $token->total_supply * 0.01; // 10% of the total supply
+                    $poolSupply = $token->total_supply * 0.01; // 10% del total supply
                     $poolName = $token->name . '-' . $otherToken->name; // Generar el nombre de la pool
 
                     Pool::create([

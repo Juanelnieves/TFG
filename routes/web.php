@@ -44,6 +44,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/tokens/all', [TokenController::class, 'showAllTokens'])->name('showAll.tokens');
     // tabla de todas las transacciones
     Route::get('/transactions/all', [TransactionController::class, 'showAllTransactions'])->name('showAll.transactions');
+    Route::post('/swap/tokens', [SwapController::class, 'swapTokens'])->name('swap.tokens');
 });
 
 
@@ -52,6 +53,7 @@ Route::get('/home', function () {
     return view('auth.dashboard');
 })->middleware(['auth', 'verified']);
 
+Route::get('/api/swap/rate', [SwapController::class, 'getSwapRate'])->name('api.swap.rate');
 
 Route::get('/home', [PoolController::class, 'showHomePools'])->middleware(['auth', 'verified']);
 

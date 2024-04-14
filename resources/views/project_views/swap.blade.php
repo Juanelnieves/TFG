@@ -65,7 +65,7 @@
             <div class="flex justify-between items-center mb-3">
                 <span class="text-gray-300">Cantidad:</span>
                 <input type="number" name="token1Amount" id="token1Amount"
-                    class="text-white border-none bg-success h2 text-end rounded-2" value="1000"
+                    class="text-white border-none bg-success h2 text-end rounded-2" value="0"
                     placeholder="Ingrese la cantidad">
             </div>
         </div>
@@ -102,19 +102,35 @@
             <div class="flex justify-between items-center mb-3">
                 <span class="text-gray-300">Cantidad:</span>
                 <input type="number" name="token2Amount" id="token2Amount"
-                    class="text-white border-none bg-success h2 text-end rounded-2" value="500"
+                    class="text-white border-none bg-success h2 text-end rounded-2" value="0"
                     placeholder="Ingrese la cantidad">
             </div>
         </div>
 
 
-
-
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+                <p>Has intercambiado {{ session('amountToSwap') }} {{ session('token1') }} por
+                    {{ session('amountToReceive') }} {{ session('token2') }}.</p>
+            </div>
+        @endif
+        @if (session('Error'))
+            <div class="alert alert-danger">
+                {{ session('Error') }}
+                <p>Has intercambiado {{ session('amountToSwap') }} {{ session('token1') }} por
+                    {{ session('amountToReceive') }} {{ session('token2') }}.</p>
+            </div>
+        @endif
         <!-- Swap Button -->
         <div class="text-center mt-8">
-            <button id="swapTokensButton" class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-                Realizar Intercambio
-            </button>
+            <form action="{{ route('swap.tokens') }}" method="post">
+                @csrf
+                <!-- Aquí van los campos para seleccionar los tokens y la cantidad a intercambiar -->
+                <button type="submit" class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                    Realizar Intercambio
+                </button>
+            </form>
         </div>
     </div>
 
@@ -125,4 +141,38 @@
 @endpush
 
 @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const token1Dropdown = document.getElementById('token1Dropdown');
+            const token2Dropdown = document.getElementById('token2Dropdown');
+            const token1AmountInput = document.getElementById('token1Amount');
+            const token2AmountDisplay = document.getElementById('token2Amount');
+
+            function updateSwapRate() {
+                const token1 = token1Dropdown.value;
+                const token2 = token2Dropdown.value;
+                const amount = token1AmountInput.value;
+
+                if (token1 && token2 && amount > 0) {
+                    fetch(`/api/swap/rate?token1=${token1}&token2=${token2}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const rate = data.rate;
+                            const amountToReceive = amount * rate;
+                            token2AmountDisplay.textContent = amountToReceive.toFixed(2);
+                        })
+                        .catch(error => {
+                            console.error('Error fetching swap rate:', error);
+                            token2AmountDisplay.textContent = 'Error';
+                        });
+                } else {
+                    token2AmountDisplay.textContent = '0';
+                }
+            }
+
+            token1Dropdown.addEventListener('change', updateSwapRate);
+            token2Dropdown.addEventListener('change', updateSwapRate);
+            token1AmountInput.addEventListener('input', updateSwapRate);
+        });
+    </script>
 @endpush
