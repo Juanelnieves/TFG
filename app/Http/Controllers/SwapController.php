@@ -8,32 +8,68 @@ use App\Models\Token;
 use App\Models\Transaction;
 use App\Models\UserToken;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 
 class SwapController extends Controller
 {
-    // En SwapController.php
-
     public function showSwap(Request $request)
     {
-        $tokens = Token::pluck('name');
-        $selectedToken1 = $request->input('token1'); // Obtener el token seleccionado desde la solicitud
-        $selectedToken2 = $request->input('token2'); // Obtener el segundo token seleccionado desde la solicitud
+        $tokens = Token::all();
+        $selectedToken1 = $request->input('token1');
+        $selectedToken2 = $request->input('token2');
+        Log::info('Selected Token 1 in showSwap:', [$selectedToken1]);
+        Log::info('Selected Token 2 in showSwap:', [$selectedToken2]);
 
-        // Verificar si se seleccionaron tokens y obtener los modelos correspondientes
-        $tokenModel1 = $selectedToken1 ? Token::where('name', $selectedToken1)->first() : null;
-        $tokenModel2 = $selectedToken2 ? Token::where('name', $selectedToken2)->first() : null;
+        $tokenModel1 = null;
+        $tokenModel2 = null;
+        $pool = null;
+        $userToken1Amount = 0;
+        $userToken2Amount = 0;
+        Log::info('Selected Token 1:', [$selectedToken1]);
+        Log::info('Selected Token 2:', [$selectedToken2]);
 
-        // Verificar si existe un pool con los tokens seleccionados
-        $pool = Pool::where('token1_id', $tokenModel1->id)
-            ->where('token2_id', $tokenModel2->id)
-            ->orWhere(function ($query) use ($tokenModel1, $tokenModel2) {
-                $query->where('token1_id', $tokenModel2->id)
-                    ->where('token2_id', $tokenModel1->id);
-            })
-            ->first();
+        if ($selectedToken1 && $selectedToken2) {
+            $tokenModel1 = Token::where('name', $selectedToken1)->first();
+            $tokenModel2 = Token::where('name', $selectedToken2)->first();
 
-        return view('project_views.swap', compact('tokens', 'tokenModel1', 'tokenModel2', 'pool'));
+            Log::info('Token Model 1:', [$tokenModel1]);
+            Log::info('Token Model 2:', [$tokenModel2]);
+
+            if ($tokenModel1 && $tokenModel2) {
+                $pool = Pool::where(function ($query) use ($tokenModel1, $tokenModel2) {
+                    $query->where('token1_id', $tokenModel1->id)
+                        ->where('token2_id', $tokenModel2->id);
+                })->orWhere(function ($query) use ($tokenModel1, $tokenModel2) {
+                    $query->where('token1_id', $tokenModel2->id)
+                        ->where('token2_id', $tokenModel1->id);
+                })->first();
+
+                Log::info('Pool:', [$pool]);
+
+                // Asegurarse de que el usuario está autenticado antes de intentar obtener sus tokens
+                if (auth()->check()) {
+                    $userToken1 = UserToken::where('user_id', auth()->user()->id)
+                        ->where('token_id', $tokenModel1->id)
+                        ->first();
+                    $userToken2 = UserToken::where('user_id', auth()->user()->id)
+                        ->where('token_id', $tokenModel2->id)
+                        ->first();
+
+                    Log::info('User Token 1:', [$userToken1]);
+                    Log::info('User Token 2:', [$userToken2]);
+
+                    $userToken1Amount = $userToken1 ? $userToken1->amount : 0;
+                    $userToken2Amount = $userToken2 ? $userToken2->amount : 0;
+
+                    Log::info('User Token 1 Amount:', [$userToken1Amount]);
+                    Log::info('User Token 2 Amount:', [$userToken2Amount]);
+                }
+            }
+        }
+        Log::info('User Token 1 Amount in showSwap2:', [$userToken1Amount]);
+        Log::info('User Token 2 Amount in showSwap2:', [$userToken2Amount]);
+
+        return view('project_views.swap', compact('tokens', 'selectedToken1', 'selectedToken2', 'pool', 'userToken1Amount', 'userToken2Amount'));
     }
     public function swapTokens(Request $request)
     {
@@ -58,7 +94,11 @@ class SwapController extends Controller
             ->first();
 
         if (!$pool) {
-            return back()->withErrors(['No existe un pool con los tokens seleccionados.']);
+            return back()->withErrors(['error' => 'No existe un pool con los tokens seleccionados.'])
+                ->with([
+                    'token1' => $token1->name,
+                    'token2' => $token2->name,
+                ]);
         }
 
         // Obtener la cantidad de token1 que el usuario desea intercambiar
@@ -70,7 +110,12 @@ class SwapController extends Controller
 
         // Verificar si el pool tiene suficientes token2 para el intercambio
         if ($pool->token2_amount < $amountToReceive) {
-            return back()->withErrors(['No hay suficientes tokens disponibles en el pool para realizar el intercambio.']);
+            return back()->withErrors(['error' => 'No hay suficientes tokens disponibles en el pool para realizar el intercambio.'])
+                ->with([
+                    'amountToSwap' => $amountToSwap,
+                    'token1' => $token1->name,
+                    'token2' => $token2->name,
+                ]);
         }
 
         // Actualizar las cantidades de tokens en el pool
@@ -105,13 +150,13 @@ class SwapController extends Controller
 
         // Después de realizar el intercambio, crear una nueva transacción
         $transaction = new Transaction([
-            'type' => 'swap', // Asumiendo que 'swap' es un tipo de transacción válido
-            'status' => 'completed', // Asumiendo que la transacción se completa exitosamente
-            'user_id' => auth()->user()->id, // Asumiendo que el usuario está autenticado
-            'amount' => $amountToSwap, // La cantidad de token1 que se intercambia
+            'type' => 'swap', 
+            'status' => 'completed', 
+            'user_id' => auth()->user()->id, 
+            'amount' => $amountToSwap,
         ]);
         $transaction->save();
-        
+
         // Redirigir al usuario con un mensaje de éxito
         return redirect()->back()->with([
             'success' => 'Intercambio realizado con éxito.',
@@ -125,25 +170,25 @@ class SwapController extends Controller
 
     public function getSwapRate(Request $request)
     {
-        // Validar los parámetros de la solicitud
+        Log::info('Request received', $request->all());
+
         $request->validate([
             'token1' => 'required|exists:tokens,name',
             'token2' => 'required|exists:tokens,name',
         ]);
 
-        // Obtener los tokens seleccionados
-        $token1 = Token::where('name', $request->query('token1'))->first();
-        $token2 = Token::where('name', $request->query('token2'))->first();
+        $token1Name = $request->query('token1');
+        $token2Name = $request->query('token2');
 
-
-        $token1Model = Token::where('name', $token1)->first();
-        $token2Model = Token::where('name', $token2)->first();
+        $token1Model = Token::where('name', $token1Name)->first();
+        $token2Model = Token::where('name', $token2Name)->first();
 
         if (!$token1Model || !$token2Model) {
             return response()->json(['error' => 'Uno de los tokens no existe.'], 404);
         }
 
-        // Verificar si existe un pool con los tokens seleccionados
+        Log::info('Attempting to find pool for tokens', ['token1' => $token1Name, 'token2' => $token2Name]);
+
         $pool = Pool::where(function ($query) use ($token1Model, $token2Model) {
             $query->where('token1_id', $token1Model->id)
                 ->where('token2_id', $token2Model->id);
@@ -152,15 +197,60 @@ class SwapController extends Controller
                 ->where('token2_id', $token1Model->id);
         })->first();
 
-
         if (!$pool) {
+            Log::info('Pool not found for tokens', ['token1' => $token1Name, 'token2' => $token2Name]);
             return response()->json(['error' => 'No existe un pool con los tokens seleccionados.'], 404);
         }
 
-        // Calcular la tasa de intercambio
-        // Asumiendo una relación de liquidez simple (esto puede variar dependiendo de la lógica de negocio específica)
-        $rate = $pool->token2_amount / $pool->token1_amount;
+        Log::info('Pool found', $pool->toArray());
 
-        return response()->json(['rate' => $rate]);
+        $token1Amount = $pool->token1_amount;
+        $token2Amount = $pool->token2_amount;
+
+        if ($token1Amount == 0 || $token2Amount == 0) {
+            Log::info('One of the tokens in the pool has a zero amount', ['pool' => $pool->toArray()]);
+            return response()->json(['error' => 'Uno de los tokens en el pool tiene una cantidad de cero.'], 400);
+        }
+
+        try {
+            $rate = $token2Amount / $token1Amount;
+            Log::info('Swap rate calculated', ['rate' => $rate]);
+
+            return response()->json(['rate' => $rate]);
+        } catch (\DivisionByZeroError $e) {
+            Log::error('Division by zero error', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'La cantidad de token1 en el pool es cero.'], 400);
+        }
     }
+
+    public function getUserTokenAmounts(Request $request)
+{
+    $selectedToken1 = $request->input('token1');
+    $selectedToken2 = $request->input('token2');
+
+    $userToken1Amount = 0;
+    $userToken2Amount = 0;
+
+    if ($selectedToken1 && $selectedToken2) {
+        $tokenModel1 = Token::where('name', $selectedToken1)->first();
+        $tokenModel2 = Token::where('name', $selectedToken2)->first();
+
+        if ($tokenModel1 && $tokenModel2) {
+            $userToken1 = UserToken::where('user_id', auth()->user()->id)
+                ->where('token_id', $tokenModel1->id)
+                ->first();
+            $userToken2 = UserToken::where('user_id', auth()->user()->id)
+                ->where('token_id', $tokenModel2->id)
+                ->first();
+
+            $userToken1Amount = $userToken1 ? $userToken1->amount : 0;
+            $userToken2Amount = $userToken2 ? $userToken2->amount : 0;
+        }
+    }
+
+    return response()->json([
+        'userToken1Amount' => $userToken1Amount,
+        'userToken2Amount' => $userToken2Amount,
+    ]);
+}
 }

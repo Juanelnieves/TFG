@@ -16,7 +16,7 @@ class PoolsTableSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::first(); // Get the first user to associate with the pool
+        $user = User::first();
         $token1 = Token::findOrFail(1);
         $token2 = Token::findOrFail(2);
 
@@ -27,15 +27,19 @@ class PoolsTableSeeder extends Seeder
             'user_id' => $user->id,
             'token1_id' => $token1->id,
             'token2_id' => $token2->id,
+            'token1_amount' => 500.00, 
+            'token2_amount' => 500.00, 
         ]);
-
+    
         Pool::create([
             'name' => 'Pool Prueba',
             'description' => 'Pool para TKC con PDT',
             'total_liquidity' => 1000.00,
-            'user_id' => 2, // ID del segundo usuario
+            'user_id' => 2, 
             'token1_id' => 4, 
             'token2_id' => 1, 
+            'token1_amount' => 500.00, 
+            'token2_amount' => 500.00, 
         ]);
     }
 }

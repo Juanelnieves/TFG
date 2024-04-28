@@ -45,6 +45,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // tabla de todas las transacciones
     Route::get('/transactions/all', [TransactionController::class, 'showAllTransactions'])->name('showAll.transactions');
     Route::post('/swap/tokens', [SwapController::class, 'swapTokens'])->name('swap.tokens');
+    Route::get('/swap', [SwapController::class, 'showSwap'])->name('swap');
+    Route::get('/swap/user-token-amounts', [SwapController::class, 'getUserTokenAmounts'])->name('swap.userTokenAmounts');
 });
 
 
@@ -54,6 +56,7 @@ Route::get('/home', function () {
 })->middleware(['auth', 'verified']);
 
 Route::get('/api/swap/rate', [SwapController::class, 'getSwapRate'])->name('api.swap.rate');
+Route::get('/api/tokens/{tokenName}', [TokenController::class, 'getTokenInfo']);
 
 Route::get('/home', [PoolController::class, 'showHomePools'])->middleware(['auth', 'verified']);
 
@@ -64,6 +67,4 @@ Route::prefix('')->middleware('auth', 'verified')->group(function () {
 Route::post('/tokens/create', [TokenController::class, 'createToken'])->name('createToken');
 Route::post('/swap/tokenType', [SwapController::class, 'cambiarTipoToken'])->name('tokenType');
 
-Route::get('/swap', function () {
-    return view('project_views.swap');
-});
+

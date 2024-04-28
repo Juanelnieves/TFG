@@ -1,5 +1,4 @@
 @extends('auth.template')
-
 @section('content')
     {{-- SIDEBAR --}}
     <div class="container col-1 bg-dark rounded-5 ms-2 d-grid justify-content-center align-items-center">
@@ -20,7 +19,6 @@
             <i class="fa-solid fa-retweet"></i> </a>
         <div></div>
     </div>
-
     {{-- CONTENIDO PRINCIPAL --}}
     <div class="container mx-auto mt-5">
         <h1 class="text-center pb-1"><span class="rounded-pill title-custom px-3 display-6">Intercambio de tokens</span>
@@ -28,151 +26,82 @@
         <!-- Token 1 Section -->
         <div class="bg-green-900 p-4 rounded-lg shadow-lg text-white">
             <h3 class="text-lg font-bold mb-4">Token 1</h3>
-
             <!-- Token 1 Selection Area -->
             <div class="relative">
                 <div class="flex justify-between items-center bg-green-700 p-3 rounded-lg">
                     <div class="flex items-center">
                         <span class="rounded-full p-2 bg-green-800 mr-3">
                             <!-- Token Icon Placeholder -->
-                            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/ethereum-eth-icon.png"
+                            <img id="token1Image"
+                                src="{{ $selectedToken1 ? $selectedToken1->url : 'https://cdn-icons-png.freepik.com/512/5266/5266579.png' }}"
                                 alt="Token Icon" class="h-6 w-6">
                         </span>
                         <select id="token1Dropdown" name="token1"
                             class="bg-transparent text-black focus:outline-none appearance-none">
-                            {{-- Consultar los nombres de los tokens directamente en el Blade --}}
-                            @php
-                                $tokenNames = DB::table('tokens')->pluck('name');
-                            @endphp
-
-                            {{-- Iterar sobre la colección de nombres de tokens y agregar opciones --}}
-                            @foreach ($tokenNames as $name)
-                                <option value="{{ $name }}">{{ $name }}</option>
+                            @foreach ($tokens as $token)
+                                <option value="{{ $token->name }}">{{ $token->name }}</option>
                             @endforeach
                         </select>
-
-                    </div>
-
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path
-                                d="M5.516 7.548c.436 0 .84.28.993.683l1.55 4.714c.153.403.544.683.994.683h5.896c.668 0 1.207-.539 1.207-1.207 0-.668-.539-1.207-1.207-1.207H10.6l1.55-4.714a1.217 1.217 0 00-.993-1.683H5.516c-.668.047-1.207.586-1.207 1.254 0 .668.539 1.207 1.207 1.207z" />
-                        </svg>
-                    </div>
-
-                </div>
-            </div>
-            <div class="flex justify-between items-center mb-3">
-                <span class="text-gray-300">Cantidad:</span>
-                <input type="number" name="token1Amount" id="token1Amount"
-                    class="text-white border-none bg-success h2 text-end rounded-2" value="0"
-                    placeholder="Ingrese la cantidad">
-            </div>
-        </div>
-        <br><br>
-        <!-- Token 2 Section -->
-        <div class="bg-green-900 p-4 rounded-lg shadow-lg text-white">
-            <h3 class="text-lg font-bold mb-4">Token 2</h3>
-
-            <!-- Token 2 Selection Area -->
-            <div class="relative">
-                <div class="flex justify-between items-center bg-green-700 p-3 rounded-lg">
-                    <div class="flex items-center">
-                        <span class="rounded-full p-2 bg-green-800 mr-3">
-                            <!-- Token Icon Placeholder -->
-                            <img src="https://upload.wikimedia.org/wikipedia/en/b/b9/Solana_logo.png" alt="Token Icon"
-                                class="h-6 w-6">
-                        </span>
-                        <select id="token2Dropdown" name="token2"
-                            class="bg-transparent text-black focus:outline-none appearance-none">
-                            {{-- Iterar sobre la colección de nombres de tokens y agregar opciones --}}
-                            @foreach ($tokenNames as $name)
-                                <option value="{{ $name }}">{{ $name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path
-                                d="M5.516 7.548c.436 0 .84.28.993.683l1.55 4.714c.153.403.544.683.994.683h5.896c.668 0 1.207-.539 1.207-1.207 0-.668-.539-1.207-1.207-1.207H10.6l1.55-4.714a1.217 1.217 0 00-.993-1.683H5.516c-.668.047-1.207.586-1.207 1.254 0 .668.539 1.207 1.207 1.207z" />
-                        </svg>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-gray-300">Cantidad:</span>
+                            <input type="number" name="token1Amount" id="token1Amount"
+                                class="text-white border-none bg-success h2 text-end rounded-2" value="0"
+                                placeholder="Ingrese la cantidad" max="{{ $userToken1Amount }}">
+                            <span>Saldo: <span id="userToken1Amount">{{ $userToken1Amount }}</span></span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="flex justify-between items-center mb-3">
-                <span class="text-gray-300">Cantidad:</span>
-                <input type="number" name="token2Amount" id="token2Amount"
-                    class="text-white border-none bg-success h2 text-end rounded-2" value="0"
-                    placeholder="Ingrese la cantidad">
-            </div>
-        </div>
-
-
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-                <p>Has intercambiado {{ session('amountToSwap') }} {{ session('token1') }} por
-                    {{ session('amountToReceive') }} {{ session('token2') }}.</p>
-            </div>
-        @endif
-        @if (session('Error'))
-            <div class="alert alert-danger">
-                {{ session('Error') }}
-                <p>Has intercambiado {{ session('amountToSwap') }} {{ session('token1') }} por
-                    {{ session('amountToReceive') }} {{ session('token2') }}.</p>
-            </div>
-        @endif
-        <!-- Swap Button -->
-        <div class="text-center mt-8">
-            <form action="{{ route('swap.tokens') }}" method="post">
-                @csrf
-                <!-- Aquí van los campos para seleccionar los tokens y la cantidad a intercambiar -->
-                <button type="submit" class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-                    Realizar Intercambio
+            <!-- Flecha de intercambio -->
+            <div class="text-center mt-4">
+                <button type="button" id="swapTokensButton"
+                    class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                    <i class="fas fa-exchange-alt"></i>
                 </button>
-            </form>
+            </div>
+            <!-- Token 2 Section -->
+            <div class="bg-green-900 p-4 rounded-lg shadow-lg text-white">
+                <h3 class="text-lg font-bold mb-4">Token 2</h3>
+                <!-- Token 2 Selection Area -->
+                <div class="relative">
+                    <div class="flex justify-between items-center bg-green-700 p-3 rounded-lg">
+                        <div class="flex items-center">
+                            <span class="rounded-full p-2 bg-green-800 mr-3">
+                                <!-- Token Icon Placeholder -->
+                                <img id="token2Image"
+                                    src="{{ $selectedToken2 ? $selectedToken2->url : 'https://cdn-icons-png.freepik.com/512/5266/5266579.png' }}"
+                                    alt="Token Icon" class="h-6 w-6">
+                            </span>
+                            <select id="token2Dropdown" name="token2"
+                                class="bg-transparent text-black focus:outline-none appearance-none">
+                                @foreach ($tokens as $token)
+                                    <option value="{{ $token->name }}">{{ $token->name }}</option>
+                                @endforeach
+                            </select>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-gray-300">Cantidad:</span>
+                                <input type="number" name="token2Amount" id="token2Amount"
+                                    class="text-white border-none bg-success h2 text-end rounded-2" value="0"
+                                    placeholder="" readonly>
+                                <span>Saldo: <span id="userToken2Amount">{{ $userToken2Amount }}</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Swap Button -->
+            <div class="text-center mt-8">
+                <form id="swapForm" action="{{ route('swap.tokens') }}" method="post">
+                    @csrf
+                    <input type="hidden" name="token1" id="token1Input">
+                    <input type="hidden" name="token2" id="token2Input">
+                    <input type="hidden" name="amount" id="amountInput">
+                    <button type="submit" class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                        Realizar Intercambio
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
-
-    </div>
+    <div id="errorMessage" class="error-message"></div>
 @endsection
-
-@push('styles')
-@endpush
-
-@push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const token1Dropdown = document.getElementById('token1Dropdown');
-            const token2Dropdown = document.getElementById('token2Dropdown');
-            const token1AmountInput = document.getElementById('token1Amount');
-            const token2AmountDisplay = document.getElementById('token2Amount');
-
-            function updateSwapRate() {
-                const token1 = token1Dropdown.value;
-                const token2 = token2Dropdown.value;
-                const amount = token1AmountInput.value;
-
-                if (token1 && token2 && amount > 0) {
-                    fetch(`/api/swap/rate?token1=${token1}&token2=${token2}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            const rate = data.rate;
-                            const amountToReceive = amount * rate;
-                            token2AmountDisplay.textContent = amountToReceive.toFixed(2);
-                        })
-                        .catch(error => {
-                            console.error('Error fetching swap rate:', error);
-                            token2AmountDisplay.textContent = 'Error';
-                        });
-                } else {
-                    token2AmountDisplay.textContent = '0';
-                }
-            }
-
-            token1Dropdown.addEventListener('change', updateSwapRate);
-            token2Dropdown.addEventListener('change', updateSwapRate);
-            token1AmountInput.addEventListener('input', updateSwapRate);
-        });
-    </script>
-@endpush

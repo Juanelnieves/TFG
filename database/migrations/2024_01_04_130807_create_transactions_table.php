@@ -24,9 +24,10 @@ return new class extends Migration
                 'completed',
                 'failed',
             ]);
-            $table->decimal('amount', 15, 2);
+            $table->decimal('amount', 15, 2)-> default(10.00);;
             $table->foreignId('user_id')->references('id')->on('users');
-            $table->unsignedBigInteger('pool_id')->nullable(); // Añade una columna para el ID de la pool
+            
+            $table->unsignedBigInteger('pool_id')->nullable(); 
             $table->foreign('pool_id')->references('id')->on('pools')->onDelete('cascade');
             $table->timestamps();
         });

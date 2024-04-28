@@ -121,4 +121,16 @@ class TokenController extends Controller
         $tokens = Token::all();
         return response()->json($tokens);
     }
+
+
+public function getTokenInfo(Request $request, $tokenName)
+{
+    $token = Token::where('name', $tokenName)->first();
+
+    if (!$token) {
+        return response()->json(['error' => 'Token not found.'], 404);
+    }
+
+    return response()->json(['url' => $token->url]);
+}
 }

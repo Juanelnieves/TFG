@@ -61,13 +61,19 @@ class CreateCryptoData extends Command
                     $poolSupply = $token->total_supply * 0.01; // 10% del total supply
                     $poolName = $token->name . '-' . $otherToken->name; // Generar el nombre de la pool
 
+                    // Calcular la cantidad equivalente de token2 basada en el precio de token1
+                    $token1Amount = $poolSupply / $token->price;
+                    // Calcular la cantidad equivalente de token1 basada en el precio de token2
+                    $token2Amount = $poolSupply / $otherToken->price;
+
                     Pool::create([
                         'name' => $poolName, // Agregar el nombre de la pool
-                        'description' =>  $poolName,
+                        'description' => $poolName,
                         'token1_id' => $token->id,
                         'token2_id' => $otherToken->id,
-                        'supply' => $poolSupply,
                         'total_liquidity' => $poolSupply, // Establecer total_liquidity al mismo valor que supply
+                        'token1_amount' => $token1Amount, // Usar la cantidad calculada
+                        'token2_amount' => $token2Amount, // Usar la cantidad calculada
                         'user_id' => $user_id,
                     ]);
                 }
