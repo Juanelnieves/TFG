@@ -25,7 +25,7 @@
         $isCryptos = Route::currentRouteName() === 'cryptos.index';
         $isSwap = Route::currentRouteName() === 'swap';
     @endphp
-    @vite(['resources/js/app.js', 'resources/css/app.scss', 'resources/css/app.css', 'resources/css/custom.scss', 'resources/css/custom.css', $isCryptos ? 'resources/css/cryptos.scss' : null, $isSwap ? 'resources/js/swap.js' : null])
+    @vite(['resources/js/app.js', 'resources/css/app.scss', 'resources/css/app.css', 'resources/css/custom.scss', 'resources/css/custom.css', $isCryptos ? 'resources/css/cryptos.scss' : null, $isSwap ? 'resources/js/swap.js' : null, $isSwap ? 'resources/css/swap.css' : null])
 </head>
 
 <body>
