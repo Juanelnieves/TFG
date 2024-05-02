@@ -62,6 +62,13 @@
                         id="userToken1Amount">{{ $userToken1Amount }}</span></span>
                 </div>
             </div>
+             <!-- Flecha de intercambio -->
+             <div class="text-center mt-4">
+                <button type="button" id="swapTokensButton"
+                    class="bg-green-700 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                    <i class="fas fa-exchange-alt"></i>
+                </button>
+            </div>
             <!-- Token 2 Section -->
             <div>
                 <h3 class="text-lg font-bold mb-4">Token 2</h3>

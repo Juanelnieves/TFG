@@ -108,12 +108,7 @@ input[type="number"] {
     height: 2.5rem;
 }
 
-button[type="submit"] {
-    background: linear-gradient(to bottom right, #1C3F6B, #191852);
-    color: #34B8C3;
-    border: 1px;
-    border-color: #ABC4FF;
-}
+
 
 #token2Amount,
 #token1Amount {
@@ -125,7 +120,12 @@ button[type="submit"] {
     color: #80BEFF;
     font-size: large;
 }
-
+button{
+    background: linear-gradient(to bottom right, #1C3F6B, #191852);
+    color: #34B8C3;
+    border: 1px;
+    border-color: #ABC4FF;
+}
 
 /* Media Queries */
 
