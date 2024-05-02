@@ -12,8 +12,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('pools', function (Blueprint $table) {
-            $table->decimal('token1_amount', 18, 8)->default(0);
-            $table->decimal('token2_amount', 18, 8)->default(0);
+            $table->decimal('token1_amount', 32, 10)->default(0);
+            $table->decimal('token2_amount', 32, 10)->default(0);
         });
     }
 
