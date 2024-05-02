@@ -1,26 +1,26 @@
 @extends('auth.template')
 @section('content')
     {{-- SIDEBAR --}}
-    <div class="col-1 bg-dark rounded-5 d-flex flex-column justify-content-center align-items-center sidebar">
-        <a class="btn rounded-5 btn-md btn-secondary my-4" href="{{ url('/home') }}">
-            <i class="fa-solid fa-person-swimming"></i>
+    <div class="col-1 bg-dark rounded-4 d-flex flex-column justify-content-center align-items-center sidebar">
+        <a class="btn rounded-4 btn-md my-4" href="{{ url('/home') }}">
+            <img src="https://raydium.io/icons/entry-icon-pools.svg" alt="Pools Icon" class="pools-icon">
         </a>
-        <a class="btn rounded-5 btn-md btn-secondary my-4" href="{{ url('/tokens/all') }}">
+        <a class="btn rounded-4 btn-md my-4" href="{{ url('/tokens/all') }}">
             <i class="fa-brands fa-bitcoin"></i>
         </a>
-        <a class="btn rounded-5 btn-md btn-secondary my-4" href="{{ url('/tokens/view') }}">
+        <a class="btn rounded-4 btn-md my-4" href="{{ url('/tokens/view') }}">
             <i class="fa-solid fa-coins"></i>
         </a>
-        <a class="btn rounded-5 btn-md btn-secondary my-4" href="{{ url('/transactions/all') }}">
+        <a class="btn rounded-4 btn-md my-4" href="{{ url('/transactions/all') }}">
             <i class="fa-solid fa-receipt"></i>
         </a>
-        <a class="btn rounded-5 btn-md btn-secondary my-4" href="{{ url('/swap') }}">
-            <i class="fa-solid fa-retweet"></i>
+        <a class="btn rounded-4 btn-md my-4" href="{{ url('/swap') }}">
+            <img src="https://raydium.io/icons/entry-icon-swap.svg" alt="Swap Icon" class="swap-icon">
         </a>
     </div>
     {{-- CONTENIDO PRINCIPAL --}}
     <div class="container">
-        <h1 class="text-center pb-1"><span class="title px-6 display-6" id="title">Intercambio de tokens</span>
+        <h1 class="text-center pb-1"><span class="title px-6 display-6  " id="title">Intercambio de tokens</span>
         </h1>
         <!-- Token Swap Section -->
         <div class="bg-green-900 p-4 rounded-lg shadow-lg text-white">

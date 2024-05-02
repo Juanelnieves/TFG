@@ -57,7 +57,6 @@
                                 </li>
                             @endif
                         @else
-                            {{-- @if (Auth::user()->email_verified_at) --}}
                             <div class="dropdown flex-row-reverse">
                                 <button class="btn btn-secondary rounded-5" type="button" id="dropdownMenuButton1"
                                     data-bs-toggle="dropdown" aria-expanded="false">
