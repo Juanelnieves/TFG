@@ -10,7 +10,7 @@ body {
     align-items: center;
     justify-content: center;
     margin-left: 19rem;
-    margin-top: 2rem;
+    margin-top: -5rem;
 }
 
 .table-container {
@@ -115,6 +115,7 @@ button {
     border: 1px;
     border-color: #ABC4FF;
 }
+
 /* Media Queries */
 @media screen and (max-width: 1080px) {
     .container {

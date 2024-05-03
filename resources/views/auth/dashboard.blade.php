@@ -2,23 +2,22 @@
 
 @section('content')
     {{-- SIDEBAR --}}
-    <div class="container col-1 bg-dark rounded-5 ms-2 d-grid justify-content-center align-items-center">
-        <div></div>
-        <a class="btn rounded-5 btn-secondary mt-5" href="{{ url('/home') }}">
-            <i class="fa-solid fa-person-swimming"></i>
+    <div class="col-1 bg-dark rounded-4 d-flex flex-column justify-content-center align-items-center sidebar">
+        <a class="btn rounded-4 btn-md my-4" href="{{ url('/home') }}">
+            <img src="https://raydium.io/icons/entry-icon-pools.svg" alt="Pools Icon" class="pools-icon">
         </a>
-        <a class="btn rounded-5 btn-secondary" href="{{ url('/tokens/all') }}">
+        <a class="btn rounded-4 btn-md my-4" href="{{ url('/tokens/all') }}">
             <i class="fa-brands fa-bitcoin"></i>
         </a>
-        <a class="btn rounded-5 btn-secondary" href="{{ url('/tokens/view') }}">
+        <a class="btn rounded-4 btn-md my-4" href="{{ url('/tokens/view') }}">
             <i class="fa-solid fa-coins"></i>
         </a>
-        <a class="btn rounded-5 btn-secondary" href="{{ url('/transactions/all') }}">
+        <a class="btn rounded-4 btn-md my-4" href="{{ url('/transactions/all') }}">
             <i class="fa-solid fa-receipt"></i>
         </a>
-        <a class="btn rounded-5 btn-secondary mb-5" href="{{ url('/swap') }}">
-            <i class="fa-solid fa-retweet"></i> </a>
-        <div></div>
+        <a class="btn rounded-4 btn-md my-4" href="{{ url('/swap') }}">
+            <img src="https://raydium.io/icons/entry-icon-swap.svg" alt="Swap Icon" class="swap-icon">
+        </a>
     </div>
 
     {{-- CONTENIDO PRINCIPAL --}}
@@ -270,186 +269,6 @@
         {{ session('info') }}
     </div>
 @endif
-
-
-@push('styles')
-    <style>
-        body {
-            background-color: #0f172a;
-        }
-
-        .text-2xl,
-        .text-3xl,
-        .text-lg {
-            color: #e2e8f0;
-            /* A light grey color for text */
-        }
-
-        .bg-green-800 {
-            background-color: #0d7936;
-            /* A deep green color */
-        }
-
-        .bg-green-700 {
-            background-color: #0d9a43;
-            /* A slightly lighter green */
-        }
-
-        .bg-green-900 {
-            background-color: #119443;
-            /* An even deeper green color */
-        }
-
-        .hover\:bg-green-600:hover {
-            background-color: #25eb3c;
-            /* A hover state color */
-        }
-
-        .rounded-lg {
-            border-radius: 0.5rem;
-            /* Rounded corners */
-        }
-
-        .shadow-lg {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-            /* Shadow for depth */
-        }
-
-        .font-bold {
-            font-weight: 700;
-            /* Bold font */
-        }
-
-        .py-2 {
-            padding-top: 0.5rem;
-            /* Y-axis padding */
-            padding-bottom: 0.5rem;
-        }
-
-        .px-4 {
-            padding-left: 1rem;
-            /* X-axis padding */
-            padding-right: 1rem;
-        }
-
-        .mb-3,
-        .mb-4,
-        .mb-6,
-        .mb-8 {
-            margin-bottom: 1rem;
-            /* Bottom margin variations */
-        }
-
-        .mt-5,
-        .mt-8 {
-            margin-top: 1.25rem;
-            /* Top margin variations */
-        }
-
-        .text-center {
-            text-align: center;
-            /* Center text alignment */
-        }
-
-        .text-right {
-            text-align: right;
-            /* Right text alignment */
-        }
-
-        .grid {
-            display: grid;
-            /* Grid layout */
-        }
-
-        .grid-cols-1 {
-            grid-template-columns: repeat(1, minmax(0, 1fr));
-        }
-
-        .grid-cols-3 {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            /* Three columns grid */
-        }
-
-        .gap-4 {
-            gap: 1rem;
-            /* Spacing between grid items */
-        }
-
-        .divide-y> :not([hidden])~ :not([hidden]) {
-            --tw-divide-y-reverse: 0;
-            border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
-            border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
-        }
-
-        .divide-green-700> :not([hidden])~ :not([hidden]) {
-            --tw-divide-opacity: 1;
-            border-color: rgba(55, 65, 81, var(--tw-divide-opacity));
-            /* Divider color */
-        }
-
-        .modal-content {
-            background-color: #119443;
-            /* Green background for the modal content */
-            color: white;
-            /* White text color */
-        }
-
-        .modal-header {
-            border-bottom: 1px solid #0d7936;
-            /* Border bottom for the header */
-        }
-
-        .modal-footer {
-            border-top: 1px solid #0d7936;
-            /* Border top for the footer */
-        }
-
-        .modal-title {
-            color: white;
-            /* White title text color */
-        }
-
-        .btn-close {
-            color: white;
-            /* White close button color */
-        }
-
-        /* Form styles */
-        .form-control {
-            background-color: #0f172a;
-            /* Dark background for form inputs */
-            color: white;
-            /* White text color for form inputs */
-            border: 1px solid #0d7936;
-            /* Border color for form inputs */
-        }
-
-        .form-control:focus {
-            border-color: #25eb3c;
-            /* Border color on focus for form inputs */
-            box-shadow: 0 0 0 0.2rem rgba(37, 226, 60, 0.25);
-            /* Box shadow on focus for form inputs */
-        }
-
-        .btn {
-            color: white;
-            /* White text color for buttons */
-            border: none;
-            /* No border for buttons */
-        }
-
-        .btn:hover {
-            background-color: #25eb3c;
-            /* Hover background color for buttons */
-        }
-
-        .btn:active {
-            background-color: #0d7936;
-            /* Active background color for buttons */
-        }
-    </style>
-@endpush
-
 @push('scripts')
     <script>
         $(document).ready(function() {
