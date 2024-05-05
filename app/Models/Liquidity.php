@@ -9,6 +9,7 @@ class Liquidity extends Model
 {
     use HasFactory;
     protected $table = 'liquiditys';
+    protected $fillable = ['user_id', 'pool_id', 'token_id', 'amount'];
 
     public function user()
     {

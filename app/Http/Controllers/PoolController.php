@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserToken;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Transaction;
@@ -15,58 +16,100 @@ use App\Services\CryptoPriceService;
 
 class PoolController extends Controller
 {
+
     //Añadir Liquidez
     public function addLiquidity(Request $request)
     {
-        // Validar los datos del request
-        $request->validate([
-            'userId' => 'required|numeric|exists:users,id',
-            'poolId' => 'required|numeric|exists:pools,id',
-            'token1_amount' => 'required|numeric|gt:0',
-            'token2_amount' => 'required|numeric|gt:0',
-        ]);
+        Log::info('Iniciando proceso de añadir liquidez');
+        Log::info('Datos del request:', $request->all());
+
+        $poolId = $request->input('poolId');
+        Log::info('Pool ID recibido: ' . $poolId);
+
+        // Asegurar que el pool existe
+        $pool = Pool::find($poolId);
+        if (!$pool) {
+            Log::error('Se recibió un ID de pool inválido: ' . $poolId);
+            return redirect()->back()->withErrors(['error' => 'ID de pool inválido.']);
+        }
 
         // Iniciar una transacción
         DB::beginTransaction();
+        Log::info('Transacción iniciada');
 
         try {
             // Obtener el usuario y la pool
-            $user = User::findOrFail($request->userId);
-            $pool = Pool::findOrFail($request->poolId);
+            $user = auth()->user();
+            Log::info('Usuario y pool obtenidos');
+
+            // Validar y obtener cantidades de tokens
+            $token1Amount = $request->input('token1_amount');
+            $token2Amount = $request->input('token2_amount');
 
             // Verificar que el usuario tenga suficientes tokens
-            $userToken1Balance = $user->tokens()->where('token_id', $pool->token1_id)->first()->pivot->amount ?? 0;
-            $userToken2Balance = $user->tokens()->where('token_id', $pool->token2_id)->first()->pivot->amount ?? 0;
+            $userToken1 = $user->tokens()->where('token_id', $pool->token1_id)->first();
+            $userToken2 = $user->tokens()->where('token_id', $pool->token2_id)->first();
 
-            if ($userToken1Balance < $request->token1_amount || $userToken2Balance < $request->token2_amount) {
-                throw new Exception('No tienes suficientes tokens para añadir a la pool.');
+            Log::info('User Token 1:', [$userToken1]);
+            Log::info('User Token 2:', [$userToken2]);
+
+            Log::info('Token 1 amount needed: ' . $token1Amount);
+            Log::info('Token 2 amount needed: ' . $token2Amount);
+
+            if (!$userToken1 || $userToken1->pivot->amount < $token1Amount) {
+                Log::info('El usuario no tiene suficientes tokens del tipo 1');
+                return redirect()->back()->withErrors(['error' => 'No tienes suficientes tokens del tipo 1 para añadir a la pool.']);
             }
 
-            // Crear un nuevo registro en la tabla liquiditys para cada token
-            $liquidity1 = new Liquidity();
-            $liquidity1->user_id = $request->userId;
-            $liquidity1->pool_id = $request->poolId;
-            $liquidity1->token_id = $pool->token1_id;
-            $liquidity1->amount = $request->token1_amount;
-            $liquidity1->save();
+            if (!$userToken2 || $userToken2->pivot->amount < $token2Amount) {
+                Log::info('El usuario no tiene suficientes tokens del tipo 2');
+                return redirect()->back()->withErrors(['error' => 'No tienes suficientes tokens del tipo 2 para añadir a la pool.']);
+            }
 
-            $liquidity2 = new Liquidity();
-            $liquidity2->user_id = $request->userId;
-            $liquidity2->pool_id = $request->poolId;
-            $liquidity2->token_id = $pool->token2_id;
-            $liquidity2->amount = $request->token2_amount;
-            $liquidity2->save();
+            Log::info('Actualizando cantidades de tokens del usuario');
 
-            // Actualizar la liquidez total de la pool
-            $pool->total_liquidity += $request->token1_amount + $request->token2_amount;
+            // Actualizar cantidades de tokens del usuario
+            $userToken1->pivot->amount -= $token1Amount;
+            $userToken1->pivot->save();
+
+            $userToken2->pivot->amount -= $token2Amount;
+            $userToken2->pivot->save();
+
+            Log::info('Tokens del usuario actualizados');
+
+            Log::info('Actualizando cantidades de tokens y liquidez total de la pool');
+
+            // Calcular la nueva liquidez total
+            $newTotalLiquidity = $pool->total_liquidity + ($token1Amount) + ($token2Amount);
+
+            // Actualizar cantidades de tokens y liquidez total de la pool
+            $pool->token1_amount += $token1Amount;
+            $pool->token2_amount += $token2Amount;
+            $pool->total_liquidity = $newTotalLiquidity;
             $pool->save();
 
-            // Reducir la cantidad de tokens del usuario
-            $user->tokens()->updateExistingPivot($pool->token1_id, ['amount' => $userToken1Balance - $request->token1_amount]);
-            $user->tokens()->updateExistingPivot($pool->token2_id, ['amount' => $userToken2Balance - $request->token2_amount]);
+            Log::info('Creando registros en la tabla liquidities');
+
+            // Crear un nuevo registro en la tabla liquidities para cada token
+            Liquidity::create([
+                'user_id' => $user->id,
+                'pool_id' => $pool->id,
+                'token_id' => $pool->token1_id,
+                'amount' => $token1Amount,
+            ]);
+
+            Liquidity::create([
+                'user_id' => $user->id,
+                'pool_id' => $pool->id,
+                'token_id' => $pool->token2_id,
+                'amount' => $token2Amount,
+            ]);
+
+            Log::info('Registros de liquidez creados');
 
             // Si todo va bien, confirmar la transacción
             DB::commit();
+            Log::info('Transacción confirmada');
 
             return redirect()->back()->with('success', 'Liquidez añadida exitosamente');
         } catch (Exception $e) {
@@ -77,10 +120,9 @@ class PoolController extends Controller
             Log::error('Error añadiendo liquidez: ' . $e->getMessage());
 
             // Redirigir con un mensaje de error
-            return redirect()->back()->withErrors(['message' => 'Hubo un error al añadir liquidez.']);
+            return redirect()->back()->withErrors(['error' => 'Hubo un error al añadir liquidez.']);
         }
     }
-
     //Quitar Liquidez
     public function removeLiquidity(Request $request, $userId, $poolId, $tokenId, $amount)
     {
@@ -123,6 +165,8 @@ class PoolController extends Controller
 
     public function createPool(Request $request)
     {
+        Log::info('Creando pool con datos:', $request->all());
+
         $request->validate([
             'name' => 'required|string|max:100',
             'description' => 'required|string|max:255',
@@ -197,7 +241,7 @@ class PoolController extends Controller
     public function showMyPools()
     {
         $user = auth()->user();
-        $myPools = $user->pools->with('token1', 'token2')->get();
+        $myPools = $user->pools()->with('token1', 'token2')->get();  // Corregido
         $allPools = Pool::with('token1', 'token2')->get();
         return view('auth.dashboard', compact('myPools', 'allPools'));
     }
@@ -212,8 +256,11 @@ class PoolController extends Controller
     public function showHomePools(CryptoPriceService $cryptoPriceService)
     {
         $user = auth()->user();
-        $myPools = $user->pools;
-        $allPools = Pool::all();
+        $myPoolsPage = request()->query('my_pools_page', 1);
+        $allPoolsPage = request()->query('all_pools_page', 1);
+
+        $myPools = $user->pools()->paginate(5, ['*'], 'my_pools_page', $myPoolsPage);
+        $allPools = Pool::whereNotIn('id', $user->pools->pluck('id'))->paginate(5, ['*'], 'all_pools_page', $allPoolsPage);
         $tokens = Token::all();
 
         // Obtener el volumen en 24 horas

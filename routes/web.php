@@ -58,7 +58,7 @@ Route::get('/home', function () {
 Route::get('/api/swap/rate', [SwapController::class, 'getSwapRate'])->name('api.swap.rate');
 Route::get('/api/tokens/{tokenName}', [TokenController::class, 'getTokenInfo']);
 
-Route::get('/home', [PoolController::class, 'showHomePools'])->middleware(['auth', 'verified']);
+Route::get('/home', [PoolController::class, 'showHomePools'])->middleware(['auth', 'verified'])->name('home');
 
 // Rutas que acceden solo desde login
 Route::prefix('')->middleware('auth', 'verified')->group(function () {
@@ -66,5 +66,3 @@ Route::prefix('')->middleware('auth', 'verified')->group(function () {
 
 Route::post('/tokens/create', [TokenController::class, 'createToken'])->name('createToken');
 Route::post('/swap/tokenType', [SwapController::class, 'cambiarTipoToken'])->name('tokenType');
-
-

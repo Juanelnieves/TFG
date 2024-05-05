@@ -10,7 +10,7 @@ class TransactionController extends Controller
     public function showAllTransactions()
     {
         // Recupera todas las transacciones de la base de datos
-        $transactions = Transaction::all();
+        $transactions = Transaction::paginate(5);
 
         // Pasa las transacciones a la vista
         return view('project_views.showTransactions', compact('transactions'));

@@ -10,6 +10,7 @@ body {
     align-items: center;
     justify-content: center;
     margin-left: 6rem;
+    margin-top: -5rem;
 }
 
 .sidebar {
@@ -54,7 +55,7 @@ body {
 }
 
 .bg-green-900 {
-    background: linear-gradient(to right, #172D66, #181753);
+    background-color: #141041;
     border-image: linear-gradient(to right, #36BCE0, #C42AD8) 1;
     border-width: 2px;
     border-style: solid;

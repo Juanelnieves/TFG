@@ -20,7 +20,7 @@
         </a>
     </div>
     <div class="container">
-        <h1 class="text-center pb-1"><span class="title px-5 text-3xl" id="title">Todos los tokens</span></h1>
+        <h1 class="text-center pb-1"><span class="title px-6 display-6" id="title">Todos los tokens</span></h1>
         <div class="bg-green-900 p-3 rounded-lg shadow-lg text-white">
             <div class="flex justify-center overflow-x-auto">
                 <table class="w-full divide-y divide-gray-200">
@@ -50,13 +50,14 @@
                                 <td class="px-4 py-2 whitespace-nowrap">{{ $token->name }}</td>
                                 <td class="px-4 py-2 whitespace-nowrap">{{ strtoupper($token->symbol) }}</td>
                                 <td class="px-4 py-2 whitespace-nowrap">{{ $token->total_supply }}</td>
-                                <td class="px-4 py-2 whitespace-nowrap">{{ $token->price }}</td>
+                                <td class="px-4 py-2 whitespace-nowrap">{{ number_format($token->price, 2, '.', ',') }}
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
+            {{ $tokens->links('pagination::tailwind-allTokens') }}
         </div>
     </div>
-
-    @endsection
+@endsection

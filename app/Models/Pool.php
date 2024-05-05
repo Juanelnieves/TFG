@@ -18,6 +18,7 @@ class Pool extends Model
         'token2_id',
         'token1_amount', 
         'token2_amount',
+        'total_liquidity',
     ];
 
     public function user()

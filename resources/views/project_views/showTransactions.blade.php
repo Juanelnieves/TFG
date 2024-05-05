@@ -44,6 +44,9 @@
                     </tbody>
                 </table>
             </div>
+            <div class="mt-4">
+                {{ $transactions->links('pagination::tailwind-transaction') }}
+            </div>
         </div>
     </div>
 @endsection

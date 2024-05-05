@@ -110,7 +110,7 @@ class TokenController extends Controller
     public function showAllTokens()
     {
         // Recupera todos los tokens de la base de datos
-        $tokens = Token::all();
+        $tokens = Token::paginate(5);
 
         // Pasa los tokens a la vista
         return view('project_views.showAllTokens', compact('tokens'));
