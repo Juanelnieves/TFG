@@ -17,6 +17,10 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.4/dist/tailwind.min.css" rel="stylesheet">
+    {{-- script crear token modal --}}
+    <script defer src="{{ asset('js/createTokenModal.js') }}"></script>
+    <script defer src="{{ asset('js/changeTokenUrl.js') }}"></script>
+
     <!-- Styles -->
     @php
         $isCryptos = Route::currentRouteName() === 'cryptos.index';
@@ -25,7 +29,6 @@
         $isMyTokens = Route::currentRouteName() === 'showMy.tokens';
         $isAllTokens = Route::currentRouteName() === 'showAll.tokens';
         $isPools = Route::currentRouteName() === 'home';
-
     @endphp
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 

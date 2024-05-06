@@ -104,7 +104,7 @@ class TokenController extends Controller
         // Recupera todos los tokens del usuario
         $tokens = Token::where('user_id', $userId)->get();
         // Pasa los tokens a la vista
-        return view('project_views.showMyTokens', compact('tokens'));
+        return view('project_views.showMyTokens', compact('tokens', 'userId'));
     }
 
     public function showAllTokens()

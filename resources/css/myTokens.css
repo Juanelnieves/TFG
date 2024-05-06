@@ -115,6 +115,42 @@ button {
     border: 1px;
     border-color: #ABC4FF;
 }
+
+/* Modal-related styles */
+.modal-content {
+    background-color: #141041;
+}
+
+.modal-header {
+    border-bottom: none;
+}
+
+.modal-title {
+    color: white;
+}
+
+.modal-body {
+    background-color: #141041;
+}
+
+.form-label {
+    color: white;
+}
+
+.form-control {
+    background-color: #1E1A4E;
+    color: #ABC4FF;
+}
+
+.form-control::placeholder {
+    color: #ABC4FF;
+}
+
+.form-control:focus {
+    background-color: #1E1A4E;
+    color: #ABC4FF;
+}
+
 /* Media Queries */
 @media screen and (max-width: 1080px) {
     .container {
