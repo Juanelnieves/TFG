@@ -17,6 +17,8 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.4/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     {{-- script crear token modal --}}
     <script defer src="{{ asset('js/createTokenModal.js') }}"></script>
     <script defer src="{{ asset('js/changeTokenUrl.js') }}"></script>
@@ -34,7 +36,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     @vite(['resources/js/app.js', 'resources/css/app.scss', 'resources/css/app.css', 'resources/css/custom.scss', 'resources/css/custom.css', $isCryptos ? 'resources/css/cryptos.scss' : null, $isSwap ? 'resources/js/swap.js' : null, $isTransactions ? 'resources/css/transactions.css' : null, $isAllTokens ? 'resources/css/allTokens.css' : null, $isMyTokens ? 'resources/css/myTokens.css' : null, $isSwap ? 'resources/css/swap.css' : null, $isPools ? 'resources/js/pools.js' : null, $isPools ? 'resources/css/pools.css' : null])
-
+    <style>
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', PingFang SC, 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+        }
+    </style>
 </head>
 
 <body>
