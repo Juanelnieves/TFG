@@ -20,26 +20,26 @@
         </a>
     </div>
     <div class="container">
-        <h1 class="text-center pb-1"><span class="title px-6 display-6" id="title">Todos los tokens</span></h1>
+        <h1 class="text-center pb-1"><span class="title px-6 display-6" id="title">All tokens</span></h1>
         <div class="bg-green-900 p-3 rounded-lg shadow-lg text-white">
             <div class="flex justify-center overflow-x-auto">
                 <table class="w-full divide-y divide-gray-200">
                     <thead class="bg-green-800">
                         <tr>
                             <th class="px-4 py-2 text-left text-sm text-white uppercase tracking-wider">
-                                ID del Usuario
+                                User ID
                             </th>
                             <th class="px-4 py-2 text-left text-sm text-white uppercase tracking-wider">
-                                Nombre
+                                Name
                             </th>
                             <th class="px-4 py-2 text-left text-sm text-white uppercase tracking-wider">
-                                Símbolo
+                                Symbol
                             </th>
                             <th class="px-4 py-2 text-left text-sm text-white uppercase tracking-wider">
-                                Suministro Total
+                                Total supply
                             </th>
                             <th class="px-4 py-2 text-left text-sm text-white uppercase tracking-wider">
-                                Precio
+                                Price
                             </th>
                         </tr>
                     </thead>

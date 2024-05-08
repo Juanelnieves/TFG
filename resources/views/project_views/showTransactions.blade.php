@@ -20,16 +20,16 @@
         </a>
     </div>
     <div class="container">
-        <h1 class="text-center pb-1"><span class="title px-6 display-6" id="title">Transacciones</span></h1>
+        <h1 class="text-center pb-1"><span class="title px-6 display-6" id="title">Transactions</span></h1>
         <div class="bg-green-900 p-4 rounded-lg shadow-lg text-white">
             <div class="flex justify-center overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-green-800">
                         <th class="px-6 py-3 text-left text-base text-white uppercase tracking-wider">ID</th>
-                        <th class="px-6 py-3 text-left text-base text-white uppercase tracking-wider">Tipo</th>
-                        <th class="px-6 py-3 text-left text-base text-white uppercase tracking-wider">Estado</th>
-                        <th class="px-6 py-3 text-left text-base text-white uppercase tracking-wider">Cantidad</th>
-                        <th class="px-6 py-3 text-left text-base text-white uppercase tracking-wider">id del Usuario</th>
+                        <th class="px-6 py-3 text-left text-base text-white uppercase tracking-wider">Type</th>
+                        <th class="px-6 py-3 text-left text-base text-white uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-base text-white uppercase tracking-wider">Amount</th>
+                        <th class="px-6 py-3 text-left text-base text-white uppercase tracking-wider">User ID</th>
                     </thead>
                     <tbody class="bg-green-700 divide-y divide-gray-200">
                         @foreach ($transactions as $transaction)

@@ -21,16 +21,16 @@
     </div>
 
     <div class="container">
-        <h1 class="text-center pb-1"><span class="title px-6 display-6" id="title">Mis tokens</span></h1>
+        <h1 class="text-center pb-1"><span class="title px-6 display-6" id="title">My tokens</span></h1>
         <div class="bg-green-900 p-4 rounded-lg shadow-lg text-white">
             <div class="flex justify-center overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-green-800">
                         <tr>
                             <th class="px-6 py-3 text-left text-sm text-white uppercase tracking-wider">ID</th>
-                            <th class="px-6 py-3 text-left text-sm text-white uppercase tracking-wider">Nombre</th>
-                            <th class="px-6 py-3 text-left text-sm text-white uppercase tracking-wider">Símbolo</th>
-                            <th class="px-6 py-3 text-left text-sm text-white uppercase tracking-wider">Suministro Total</th>
+                            <th class="px-6 py-3 text-left text-sm text-white uppercase tracking-wider">Name</th>
+                            <th class="px-6 py-3 text-left text-sm text-white uppercase tracking-wider">Symbol</th>
+                            <th class="px-6 py-3 text-left text-sm text-white uppercase tracking-wider">Total supply</th>
                         </tr>
                     </thead>
                     <tbody class="bg-green-700 divide-y divide-gray-200">
@@ -47,7 +47,7 @@
             </div>
             <div class="flex justify-center mt-4">
                 <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded" data-bs-toggle="modal" data-bs-target="#createTokenModal">
-                    Crear Token
+                    Create Token
                 </button>
             </div>
         </div>
@@ -58,7 +58,7 @@
         <div class="modal-dialog">
             <div class="modal-content bg-green-800">
                 <div class="modal-header">
-                    <h5 class="modal-title text-white" id="createTokenModalLabel">Crear Token</h5>
+                    <h5 class="modal-title text-white" id="createTokenModalLabel">Create Token</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -66,11 +66,11 @@
                         @csrf
                         <div class="mb-3">
                             <label for="name" class="form-label text-white">Name</label>
-                            <input type="text" class="form-control bg-green-700 text-white" id="name" name="name" placeholder="Memecoin" required maxlength="50">
+                            <input type="text" class="form-control bg-green-700 text-white" id="name" name="name" placeholder="Bitcoin" required maxlength="50">
                         </div>
                         <div class="mb-3">
                             <label for="symbol" class="form-label text-white">Symbol</label>
-                            <input type="text" class="form-control bg-green-700 text-white" id="symbol" name="symbol" value="{{ old('symbol') }}" placeholder="MMC" required maxlength="10">
+                            <input type="text" class="form-control bg-green-700 text-white" id="symbol" name="symbol" value="{{ old('symbol') }}" placeholder="BTC" required maxlength="10">
                         </div>
                         <div class="mb-3">
                             <label for="totalSupply" class="form-label text-white">Total Supply</label>
@@ -78,7 +78,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="url" class="form-label text-white">URL</label>
-                            <input type="url" class="form-control bg-green-700 text-white" id="url" name="url" placeholder="Enter URL for the coin" required>
+                            <input type="url" class="form-control bg-green-700 text-white" id="url" name="url" placeholder="Enter URL for the coin image" required>
                         </div>
                         <div class="text-center">
                             <button type="submit" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Create Token</button>

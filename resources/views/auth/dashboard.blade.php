@@ -22,7 +22,7 @@
 
     {{-- CONTENIDO PRINCIPAL --}}
     <div class="container mx-auto">
-        <h1 class="text-center pb-1"><span class="title px-6 display-6" id="title">Gestión de Pools</span></h1>
+        <h1 class="text-center pb-1"><span class="title px-6 display-6" id="title">Manage Pools</span></h1>
         <!-- Overview Section -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <!-- Total MarketCap -->
@@ -46,16 +46,16 @@
         <!-- My Pools Section -->
         <div class="bg-green-900 p-4 rounded-lg shadow-lg text-white mb-8">
             <div class="mb-4 flex justify-between items-center">
-                <div class="text-lg">Mis Pools</div>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPoolModal">Crear Pool</button>
+                <div class="text-lg">My Pools</div>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPoolModal"> Create Pool</button>
             </div>
 
             <!-- List of My Pools -->
             <div class="mt-8">
                 <div class="divide-y divide-gray-700">
                     <div class="py-4 grid grid-cols-5 gap-4 items-center">
-                        <div class="font-bold">Nombre del Pool</div>
-                        <div class="font-bold text-center">Descripción</div>
+                        <div class="font-bold">Pool name</div>
+                        <div class="font-bold text-center">Description</div>
                         <div class="font-bold text-center">Token 1</div>
                         <div class="font-bold text-center">Token 2</div>
                     </div>
@@ -99,15 +99,15 @@
         <!-- Other Pools Section -->
         <div class="bg-green-900 p-4 rounded-lg shadow-lg text-white mb-8">
             <div class="mb-4 flex justify-between items-center">
-                <div class="text-lg">Otras Pools</div>
+                <div class="text-lg">Other Pools</div>
             </div>
 
             <!-- List of Other Pools -->
             <div class="mt-8">
                 <div class="divide-y divide-gray-700">
                     <div class="py-4 grid grid-cols-5 gap-4 items-center">
-                        <div class="font-bold">Nombre del Pool</div>
-                        <div class="font-bold text-center">Descripción</div>
+                        <div class="font-bold">Pool name</div>
+                        <div class="font-bold text-center">Description</div>
                         <div class="font-bold text-center">Token 1</div>
                         <div class="font-bold text-center">Token 2</div>
                     </div>
@@ -138,7 +138,7 @@
                                     <!-- Botón para unirse a la pool -->
                                     <button class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#addLiquidityModal" data-user-id="{{ $user->id }}"
-                                        data-pool-id="{{ $pool->id }}">Unirse</button>
+                                        data-pool-id="{{ $pool->id }}">Add Liquidity</button>
                                 </div>
                             </div>
                         @endif
@@ -155,7 +155,7 @@
         <div class="modal-dialog">
             <div class="modal-content bg-green-700 text-white">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addLiquidityModalLabel">Añadir Liquidez</h5>
+                    <h5 class="modal-title" id="addLiquidityModalLabel">Add Liquidity</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 @php
@@ -166,17 +166,17 @@
                     <input type="hidden" name="poolId" id="poolIdInput">
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="token1_amount" class="form-label">Cantidad de Token 1</label>
+                            <label for="token1_amount" class="form-label">Token 1 amount</label>
                             <input type="number" class="form-control" id="token1_amount" name="token1_amount" required>
                         </div>
                         <div class="mb-3">
-                            <label for="token2_amount" class="form-label">Cantidad de Token 2</label>
+                            <label for="token2_amount" class="form-label">Token 2 amount</label>
                             <input type="number" class="form-control" id="token2_amount" name="token2_amount" required>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Añadir Liquidez</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Liquidity</button>
                     </div>
                 </form>
                 @php
@@ -203,15 +203,14 @@
                             <div class="mb-8">
                                 <!-- Pool Name and Description -->
                                 <div class="mb-4">
-                                    <label for="name" class="block text-sm font-medium text-gray-200">Nombre de la
-                                        Pool</label>
+                                    <label for="name" class="block text-sm font-medium text-gray-200">Pool name</label>
                                     <input type="text" id="name" name="name"
                                         class="mt-1 block w-full pl-3 pr-10 py-2 text-black border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md"
                                         required>
                                 </div>
                                 <div class="mb-4">
                                     <label for="description"
-                                        class="block text-sm font-medium text-gray-200">Descripción</label>
+                                        class="block text-sm font-medium text-gray-200">Description</label>
                                     <textarea id="description" name="description"
                                         class="mt-1 block w-full pl-3 pr-10 py-2 text-black border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md"
                                         required></textarea>
@@ -278,8 +277,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Crear Pool</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Create Pool</button>
                     </div>
                 </form>
             </div>

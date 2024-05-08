@@ -20,7 +20,7 @@
     </div>
     {{-- CONTENIDO PRINCIPAL --}}
     <div class="container">
-        <h1 class="text-center pb-1"><span class="title px-6 display-6  " id="title">Intercambio de tokens</span>
+        <h1 class="text-center pb-1"><span class="title px-6 display-6  " id="title">Token Swap</span>
         </h1>
         <!-- Token Swap Section -->
         <div class="bg-green-900 p-4 rounded-lg shadow-lg text-white">
@@ -58,7 +58,7 @@
                             </div>
                         </div>
                     </div>
-                    <span class="ml-2">Saldo: <span
+                    <span class="ml-2">Balance: <span
                         id="userToken1Amount">{{ $userToken1Amount }}</span></span>
                 </div>
             </div>
@@ -100,7 +100,7 @@
                             </div>
                         </div>
                     </div>
-                    <span class="ml-2">Saldo: <span
+                    <span class="ml-2">Balance: <span
                         id="userToken2Amount">{{ $userToken2Amount }}</span></span>
                 </div>
             </div>
@@ -112,7 +112,7 @@
                     <input type="hidden" name="token2" id="token2Input">
                     <input type="hidden" name="amount" id="amountInput">
                     <button type="submit" class="bg-green-700 hover:bg-green-600 font-bold py-2 px-4 rounded">
-                        Realizar Intercambio
+                        Swap
                     </button>
                 </form>
             </div>

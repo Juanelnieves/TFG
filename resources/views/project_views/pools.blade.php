@@ -1,4 +1,4 @@
-@extends('layouts.general')
+{{-- {{-- @extends('layouts.general')
 
 @section('pools')
     <div class="container mt-5">
@@ -16,7 +16,6 @@
                     <div class="modal-body">
                         <form action="{{ route('addLiquidity') }}" method="post">
                             @csrf
-                            {{-- ! <!-- TENGO QUE AÑADIR CAMPOS --> --}}
                             <button type="submit" class="btn btn-primary">Agregar Liquidez</button>
                         </form>
                     </div>
@@ -36,7 +35,6 @@
                     <div class="modal-body">
                         <form action="{{ route('removeLiquidity') }}" method="post">
                             @csrf
-                            {{-- ! <!-- TENGO QUE AÑADIR CAMPOS --> --}}
                             <button type="submit" class="btn btn-primary">Retirar Liquidez</button>
                         </form>
                     </div>
@@ -56,7 +54,6 @@
                     <div class="modal-body">
                         <form action="{{ route('createPool') }}" method="post">
                             @csrf
-                            {{-- ! <!-- TENGO QUE AÑADIR CAMPOS --> --}}
                             <button type="submit" class="btn btn-primary">Crear Pool</button>
                         </form>
                     </div>
@@ -76,7 +73,6 @@
                     <div class="modal-body">
                         <form action="{{ route('deletePool') }}" method="post">
                             @csrf
-                            {{-- ! <!-- TENGO QUE AÑADIR CAMPOS --> --}}
                             <button type="submit" class="btn btn-primary">Eliminar Pool</button>
                         </form>
                     </div>
@@ -103,4 +99,4 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
-@endpush
+@endpush  --}}
