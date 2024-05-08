@@ -84,8 +84,7 @@
                             <div class="text-right">
                                 <!-- Botón para añadir liquidez -->
                                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addLiquidityModal"
-                                    data-user-id="{{ $user->id }}" data-pool-id="{{ $pool->id }}">Añadir
-                                    Liquidez</button>
+                                    data-user-id="{{ $user->id }}" data-pool-id="{{ $pool->id }}">Add Liquidity</button>
                             </div>
                         </div>
                     @endforeach
