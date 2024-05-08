@@ -20,7 +20,8 @@
     {{-- script crear token modal --}}
     <script defer src="{{ asset('js/createTokenModal.js') }}"></script>
     <script defer src="{{ asset('js/changeTokenUrl.js') }}"></script>
-
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('icono.png') }}">
     <!-- Styles -->
     @php
         $isCryptos = Route::currentRouteName() === 'cryptos.index';
