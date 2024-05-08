@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Token;
 use App\Models\Pool;
 
-use App\Models\UserToken; // Asegúrate de importar el modelo UserToken
+use App\Models\UserToken; 
 
 class CreateCryptoData extends Command
 {
