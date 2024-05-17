@@ -1,0 +1,57 @@
+body {
+    background: radial-gradient(circle at center, rgb(186, 230, 253) 0%, #0C0927 30%, rgb(49, 46, 129) 100%), linear-gradient(to right, #172D66 0%, #172D66 25%, #36BCE0 25%, #36BCE0 50%, #C42AD8 50%, #C42AD8 75%, #172D66 75%, #172D66 100%);
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+
+.navbar {
+    background-color: #141041; 
+    color: white;
+}
+
+.navbar a {
+    color: white;
+}
+
+.navbar a:hover {
+    color: #C42AD8
+}
+.auth-page .card {
+    background-color: #141041; 
+    border: 1px solid transparent;
+    border-radius: 0.5rem; 
+    color: white; 
+    padding: 2rem; 
+    border-image: linear-gradient(to right, #36BCE0, #C42AD8) 1; 
+    margin-top: 25rem;
+}
+
+.auth-page .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.auth-page .btn-link {
+    color: #007bff;
+}
+
+button {
+    background: linear-gradient(to bottom right, #1C3F6B, #191852);
+    color: #34B8C3;
+    border: 1px;
+    border-color: #ABC4FF;
+}
+
+/* Media Queries */
+@media screen and (max-width: 1080px) {
+    .auth-page .container {
+        margin-left: 15rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .auth-page .container {
+        margin-left: 10%;
+    }
+}

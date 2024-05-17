@@ -4,7 +4,7 @@
     {{-- SIDEBAR --}}
     <div class="col-1 bg-dark rounded-4 d-flex flex-column justify-content-center align-items-center sidebar">
         <a class="btn rounded-4 btn-md my-4" href="{{ url('/home') }}">
-            <img src="https://raydium.io/icons/entry-icon-pools.svg" alt="Pools Icon" class="pools-icon">
+            <img src="https://v2.raydium.io/icons/entry-icon-pools.svg" alt="Pools Icon" class="pools-icon">
         </a>
         <a class="btn rounded-4 btn-md my-4" href="{{ url('/tokens/all') }}">
             <i class="fa-brands fa-bitcoin"></i>
@@ -16,7 +16,7 @@
             <i class="fa-solid fa-receipt"></i>
         </a>
         <a class="btn rounded-4 btn-md my-4" href="{{ url('/swap') }}">
-            <img src="https://raydium.io/icons/entry-icon-swap.svg" alt="Swap Icon" class="swap-icon">
+            <img src="https://v2.raydium.io/icons/entry-icon-swap.svg" alt="Swap Icon" class="swap-icon">
         </a>
     </div>
     <div class="container">

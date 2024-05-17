@@ -32,10 +32,18 @@
         $isMyTokens = Route::currentRouteName() === 'showMy.tokens';
         $isAllTokens = Route::currentRouteName() === 'showAll.tokens';
         $isPools = Route::currentRouteName() === 'home';
+
+        // Rutas de autenticación de Fortify
+        $isLogin = Route::currentRouteName() === 'login';
+        $isRegister = Route::currentRouteName() === 'register';
+        $isVerifyEmail = Route::currentRouteName() === 'verification.notice';
+        $isResetPassword = Route::currentRouteName() === 'password.request';
+        $isForgotPassword = Route::currentRouteName() === 'password.reset';
+
     @endphp
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    @vite(['resources/js/app.js', 'resources/css/app.scss', 'resources/css/app.css', 'resources/css/custom.scss', 'resources/css/custom.css', $isCryptos ? 'resources/css/cryptos.scss' : null, $isSwap ? 'resources/js/swap.js' : null, $isTransactions ? 'resources/css/transactions.css' : null, $isAllTokens ? 'resources/css/allTokens.css' : null, $isMyTokens ? 'resources/css/myTokens.css' : null, $isSwap ? 'resources/css/swap.css' : null, $isPools ? 'resources/js/pools.js' : null, $isPools ? 'resources/css/pools.css' : null])
+    @vite(['resources/js/app.js', 'resources/css/app.scss', 'resources/css/app.css', 'resources/css/custom.scss', 'resources/css/custom.css', $isCryptos ? 'resources/css/cryptos.scss' : null, $isSwap ? 'resources/js/swap.js' : null, $isTransactions ? 'resources/css/transactions.css' : null, $isAllTokens ? 'resources/css/allTokens.css' : null, $isMyTokens ? 'resources/css/myTokens.css' : null, $isSwap ? 'resources/css/swap.css' : null, $isPools ? 'resources/js/pools.js' : null, $isPools ? 'resources/css/pools.css' : null, $isLogin ? 'resources/css/auth.css' : null, $isRegister ? 'resources/css/auth.css' : null, $isVerifyEmail ? 'resources/css/auth.css' : null, $isForgotPassword ? 'resources/css/auth.css' : null,$isResetPassword ? 'resources/css/auth.css' : null])
     <style>
         body {
             font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', PingFang SC, 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
