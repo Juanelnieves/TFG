@@ -24,7 +24,7 @@ body {
     color: white; 
     padding: 2rem; 
     border-image: linear-gradient(to right, #36BCE0, #C42AD8) 1; 
-    margin-top: 25rem;
+    margin-top: 15rem;
 }
 
 .auth-page .btn-primary {
