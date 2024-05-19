@@ -102,7 +102,7 @@ class TokenController extends Controller
         // Obtén el ID del usuario de la sesión
         $userId = auth()->id();
         // Recupera todos los tokens del usuario
-        $tokens = Token::where('user_id', $userId)->get();
+        $tokens = Token::where('user_id', $userId)->paginate(5);
         // Pasa los tokens a la vista
         return view('project_views.showMyTokens', compact('tokens', 'userId'));
     }

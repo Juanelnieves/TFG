@@ -46,10 +46,12 @@
                 </table>
             </div>
             <div class="flex justify-center mt-4">
-                <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded" data-bs-toggle="modal" data-bs-target="#createTokenModal">
+                <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded" data-bs-toggle="modal"
+                    data-bs-target="#createTokenModal">
                     Create Token
                 </button>
             </div>
+            {{ $tokens->links('pagination::tailwind-allTokens') }}
         </div>
     </div>
 
@@ -66,22 +68,27 @@
                         @csrf
                         <div class="mb-3">
                             <label for="name" class="form-label text-white">Name</label>
-                            <input type="text" class="form-control bg-green-700 text-white" id="name" name="name" placeholder="Bitcoin" required maxlength="50">
+                            <input type="text" class="form-control bg-green-700 text-white" id="name" name="name"
+                                placeholder="Bitcoin" required maxlength="50">
                         </div>
                         <div class="mb-3">
                             <label for="symbol" class="form-label text-white">Symbol</label>
-                            <input type="text" class="form-control bg-green-700 text-white" id="symbol" name="symbol" value="{{ old('symbol') }}" placeholder="BTC" required maxlength="10">
+                            <input type="text" class="form-control bg-green-700 text-white" id="symbol" name="symbol"
+                                value="{{ old('symbol') }}" placeholder="BTC" required maxlength="10">
                         </div>
                         <div class="mb-3">
                             <label for="totalSupply" class="form-label text-white">Total Supply</label>
-                            <input type="number" class="form-control bg-green-700 text-white" id="totalSupply" name="totalSupply" placeholder="14000" required min="100" max="1000000000">
+                            <input type="number" class="form-control bg-green-700 text-white" id="totalSupply"
+                                name="totalSupply" placeholder="14000" required min="100" max="1000000000">
                         </div>
                         <div class="mb-3">
                             <label for="url" class="form-label text-white">URL</label>
-                            <input type="url" class="form-control bg-green-700 text-white" id="url" name="url" placeholder="Enter URL for the coin image" required>
+                            <input type="url" class="form-control bg-green-700 text-white" id="url" name="url"
+                                placeholder="Enter URL for the coin image" required>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Create Token</button>
+                            <button type="submit" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Create
+                                Token</button>
                         </div>
                     </form>
                 </div>
